@@ -46,7 +46,9 @@ end
 InitialDrug = p.Dose;
 DrugIn = floor(T1./TimeLen)*p.Dose;
 DrugIn = DrugIn';
-%DrugIn = 0;
+if DOSEFREQ == 0
+DrugIn = 0;
+end
 DrugOut = Y1(:,2);
 BalanceD1 = DrugIn - DrugOut - CurrentD1 + InitialDrug ; %(zero = balance)
 
