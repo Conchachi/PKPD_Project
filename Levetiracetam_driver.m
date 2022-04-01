@@ -199,9 +199,234 @@ figure;
     
 %% Need to do global sensitivity analysis in addition or instead of LSA???
     
+
+
+
 %% STEP 3:
-%Population variability
+%Population variability--varying ka and kcl in children and adults
+
+%% Children (https://onlinelibrary.wiley.com/doi/10.1111/j.1528-1167.2008.01974.x)
+
+% Generate list of ka values
+cutoffka = 0;
+sdka = 0.451*sqrt(44);
+meanka = 3.83;
+
+%Set seed for repoducibility
+rng(0,'twister');
+
+katemp = sdka.*randn(100,1)+meanka; %initial list
+a=length(katemp(katemp<cutoffka)); % count people below ka
+cycle = 1;
+while a>0 % if there are any nonpositives, replace them
+    katemp(katemp<cutoffka)=sdka.*randn(a,1)+meanka;        
+    a=length(katemp(katemp<cutoffka)); 
+    cycle = cycle + 1;
+end % check again for nonpositives and loop if necessary
+
+kaPPK = katemp; % This is the final weight distribution
 
 
+% Generate list of clearance values
+cutoffCL = 0;
+sdCL = 0.103*sqrt(44);
+meanCL = 2.47;
 
+%Set seed for repoducibility
+rng(0,'philox');
+
+CLtemp = sdCL.*randn(100,1)+meanCL; %initial list
+b=length(CLtemp(CLtemp<cutoffCL)); % count people below CL = 0
+cycle = 1;
+while b>0 % if there are any nonpositives, replace them
+    CLtemp(CLtemp<cutoffCL)=sdCL.*randn(b,1)+meanCL;        
+    b=length(CLtemp(CLtemp<cutoffCL)); 
+    cycle = cycle + 1;
+end % check again for nonpositives and loop if nec.
+
+CL = CLtemp; % This is the final weight distribution
+
+%Use CL to generate list of kcl (kcl = CL/V)
+kCLPPK = CL./21.9;
+
+%% Simulations
+
+% PARAMETERS
+q = 0;     % units: nmol/hr
+V = 21.9; % units: L (volume of distribution)
+Dose = 330; %mg
+TimeLen = 12; %hours between doses
+MASS_BAL_VIS = 0; %Set to 1 to visualize mass balance
+DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+
+%Vary ka only:
+kCL = 0.113; %units: 1/hr (clearance rate constant)
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK(i),V,kCL,Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. ka
+figure;
+scatter(kaPPK, auc);
+title('AUC vs. ka in children', 'FontSize', 16);
+ylabel('AUC (mg*h/L)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. ka
+figure;
+scatter(kaPPK, ctrough);
+title('Ctrough vs. ka in children', 'FontSize', 16);
+ylabel('Ctrough (mg/L)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+
+%Vary kcl only:
+kA = 3.83; %units: 1/h
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK(i),Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. kCL
+figure;
+scatter(kCLPPK, auc);
+title('AUC vs. kcl in children', 'FontSize', 16);
+ylabel('AUC (mg*h/L)', 'FontSize', 12);
+xlabel('kcl (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. kCL
+figure;
+scatter(kCLPPK, ctrough);
+title('Ctrough vs. kCL in children', 'FontSize', 16);
+ylabel('Ctrough (mg/L)', 'FontSize', 12);
+xlabel('kCL (1/hr)', 'FontSize', 12);
+
+
+%Vary both ka and kcl:
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK(i),V,kCLPPK(i),Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. ka and kcl
+figure;
+scatter3(kaPPK, kCLPPK, auc);
+title('AUC vs. ka and kcl in children', 'FontSize', 16);
+zlabel('AUC (mg*h/L)', 'FontSize', 12);
+ylabel('kcl (1/hr)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. ka and kcl
+figure;
+scatter3(kaPPK, kCLPPK, ctrough);
+title('Ctrough vs. ka and kcl in children', 'FontSize', 16);
+zlabel('Ctrough (mg/L)', 'FontSize', 12);
+ylabel('kcl (1/hr)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%% In adults (https://doi.org/10.1080/00498254.2020.1746981)
+
+%Set seed for repoducibility
+rng(0,'twister');
+%Generate list from distribution
+kaPPK_Adult = 0.616*exp(0.327*randn(100,1)+0);
+
+%Set seed for repoducibility
+rng(0,'philox');
+%Generate list from distribution
+CLPPK = 3.26*exp(0.159*randn(100,1)+0);
+kCLPPK_Adult = CLPPK./34.7;
+
+%% Simulations
+
+% PARAMETERS
+q = 0;     % units: nmol/hr
+V = 34.7; % units: L (volume of distribution)
+Dose = 1000; %mg
+TimeLen = 12; %hours between doses
+MASS_BAL_VIS = 0; %Set to 1 to visualize mass balance
+DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+
+%Vary ka only:
+kCL = 3.26/34.7; %units: 1/hr (clearance rate constant)
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCL,Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. ka
+figure;
+scatter(kaPPK_Adult, auc);
+title('AUC vs. ka in adults', 'FontSize', 16);
+ylabel('AUC (mg*h/L)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. ka
+figure;
+scatter(kaPPK_Adult, ctrough);
+title('Ctrough vs. ka in adults', 'FontSize', 16);
+ylabel('Ctrough (mg/L)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%Vary only kcl:
+kA = 0.616; %units: 1/hr (clearance rate constant)
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK_Adult(i),Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. kCL
+figure;
+scatter(kCLPPK_Adult, auc);
+title('AUC vs. kcl in adults', 'FontSize', 16);
+ylabel('AUC (mg*h/L)', 'FontSize', 12);
+xlabel('kcl (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. kCL
+figure;
+scatter(kCLPPK_Adult, ctrough);
+title('Ctrough vs. kCL in adults', 'FontSize', 16);
+ylabel('Ctrough (mg/L)', 'FontSize', 12);
+xlabel('kcl (1/hr)', 'FontSize', 12);
+
+%Vary both ka and kcl:
+t = [];
+y = [];
+for i=1:100
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCLPPK_Adult(i),Dose,TimeLen,q,0,1);
+    t = [t t1'];
+    y = [y y1];
+end
+
+%Plot AUC vs. ka and kcl
+figure;
+scatter3(kaPPK_Adult, kCLPPK_Adult, auc);
+title('AUC vs. ka and kcl in adults', 'FontSize', 16);
+zlabel('AUC (mg*h/L)', 'FontSize', 12);
+ylabel('kcl (1/hr)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
+
+%Plot Ctrough vs. ka and kcl
+figure;
+scatter3(kaPPK_Adult, kCLPPK_Adult, ctrough);
+title('Ctrough vs. ka and kcl in adults', 'FontSize', 16);
+zlabel('Ctrough (mg/L)', 'FontSize', 12);
+ylabel('kcl (1/hr)', 'FontSize', 12);
+xlabel('ka (1/hr)', 'FontSize', 12);
 
