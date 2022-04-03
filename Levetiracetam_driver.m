@@ -14,9 +14,11 @@ Dose = 1000; %mg
 TimeLen = 14; %hours between doses
 MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
 DOSEFREQ = 0; %Set to 0 for single dose, 1 for repeated dosing
+IC50 = 2.43; %mg/L
+Rmax = 88; % units: percentage
 
 %Run simulation for single dose and print concentrations, amounts, and mass balance
-[Conc,Time,AUC0,Ctrough0] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,MASS_BAL_VIS,DOSEFREQ);
+[Conc,Time,AUC0,Ctrough0,Effect] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Rmax,MASS_BAL_VIS,DOSEFREQ);
 
 % Plot single dose to compare to paper figure
 figure;
@@ -25,6 +27,12 @@ title('Concentration of Levetiracetam in Compartment: Single Dose', 'FontSize', 
 ylabel('[D] (mg/L)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
 ylim([0 50]);
+
+figure;
+plot(Time, Effect, 'linewidth', 3);
+title('SV2A Protein Receptor Occupancy by LEV After Single Dose', 'FontSize', 16);
+ylabel('% Occupied', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
 
 %% Repeated doses, 500 mg every 12 hours
 % PARAMETERS
@@ -36,9 +44,11 @@ Dose = 500; %mg
 TimeLen = 12; %hours between doses
 MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
 DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+IC50 = 2.43; %mg/L
+Rmax = 88; % units: percentage
 
 %Run simulation for repeated doses and print concentrations, amounts, and mass balance
-[Conc,Time,AUC0,Ctrough0] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,MASS_BAL_VIS,DOSEFREQ);
+[Conc,Time,AUC0,Ctrough0,Effect] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Rmax,MASS_BAL_VIS,DOSEFREQ);
 
 %% STEP 2:
 % Identify and simulate key time-dependent variables for a range of doses
@@ -52,12 +62,14 @@ DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
 %First key variable: drug concentration in central compartment
 Conc = [];
 Time = [];
+Effect = [];
 %Test range of doses 250-1500mg
 for i=1:6
     Dose = 250*i;
-    [Conc1, Time1, AUC(i), Ctrough(i)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,0,1);
+    [Conc1, Time1, AUC(i), Ctrough(i), Effect1] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Rmax,0,1);
     Conc = [Conc Conc1];
     Time = [Time Time1'];
+    Effect = [Effect Effect1];
 end
 
 %Plot drug concentrations for range of doses
@@ -85,6 +97,8 @@ kA  =  2.44; % units: 1/hr (absorption rate constant)
 kCL = 0.096; %units: 1/hr (clearance rate constant)
 Dose = 500; %mg
 TimeLen = 12; %hours between doses
+IC50 = 2.43; %mg/L
+Rmax = 88; % units: percentage
 
 % Initial concentrations
 y0 = [0, 0, Dose]; %mg
@@ -96,9 +110,10 @@ ParamDelta = 0.05; % test sensitivity to a 5% change
 p0 = [kA V kCL Dose TimeLen q]';
 p0labels = {'kA' 'V' 'kCL' 'Dose' 'TimeLen' 'q'}';
 
-[y0,t0,auc0,ctrough0] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,0,1);
+[y0,t0,auc0,ctrough0,effect0] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Rmax,0,1);
 t = t0';
 y = y0;
+effect = effect0;
 
 %% RUN SENSITIVITY SIMULATIONS
 
@@ -107,9 +122,10 @@ y = y0;
 for i=1:length(p0)
     p=p0;
     p(i)=p0(i)*(1.0+ParamDelta);
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(p(1),p(2),p(3),p(4),p(5),p(6),0,1);
+    [y1, t1, auc(i),ctrough(i), effect1] = Levetiracetam_sim(p(1),p(2),p(3),p(4),p(5),p(6),IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
+    effect = [effect effect1];
     Sens(i) = ((auc(i)-auc0)/auc0)/((p(i)-p0(i))/p0(i)); % relative sensitivity vs parameter
     SensB(i) = ((auc(i)-auc0))/((p(i)-p0(i))); % absolute sensitivity vs parameter
     SensAbs(i) = ((auc(i)-auc0)/auc0); % relative change (not normalized to parameter)
@@ -264,7 +280,7 @@ kCL = 0.113; %units: 1/hr (clearance rate constant)
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK(i),V,kCL,Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i),effect] = Levetiracetam_sim(kaPPK(i),V,kCL,Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end
@@ -289,7 +305,7 @@ kA = 3.83; %units: 1/h
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK(i),Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK(i),Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end
@@ -313,7 +329,7 @@ xlabel('kCL (1/hr)', 'FontSize', 12);
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK(i),V,kCLPPK(i),Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK(i),V,kCLPPK(i),Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end
@@ -362,7 +378,7 @@ kCL = 3.26/34.7; %units: 1/hr (clearance rate constant)
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCL,Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCL,Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end
@@ -386,7 +402,7 @@ kA = 0.616; %units: 1/hr (clearance rate constant)
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK_Adult(i),Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kA,V,kCLPPK_Adult(i),Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end
@@ -409,7 +425,7 @@ xlabel('kcl (1/hr)', 'FontSize', 12);
 t = [];
 y = [];
 for i=1:100
-    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCLPPK_Adult(i),Dose,TimeLen,q,0,1);
+    [y1, t1, auc(i),ctrough(i)] = Levetiracetam_sim(kaPPK_Adult(i),V,kCLPPK_Adult(i),Dose,TimeLen,q,IC50,Rmax,0,1);
     t = [t t1'];
     y = [y y1];
 end

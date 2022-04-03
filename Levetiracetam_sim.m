@@ -1,4 +1,4 @@
-function [Conc,Time,AUC,Ctrough] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, MASS_BAL_VIS, DOSEFREQ);
+function [Conc,Time,AUC,Ctrough, Effect] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Rmax, MASS_BAL_VIS, DOSEFREQ);
 
 %% PARAMETERS
 p.q = 0;     % units: nmol/hr
@@ -41,6 +41,9 @@ Conc = Y1(:,1);
 Time = T1;
 
 end
+
+%Effect model for receptor occupancy
+Effect = (Rmax.*Y1(:,1))./(IC50+Y1(:,1));
 
 % MASS BALANCE
 InitialDrug = p.Dose;
