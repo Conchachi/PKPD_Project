@@ -42,6 +42,20 @@ title('SV2A Protein Receptor Occupancy by LEV After Single Dose', 'FontSize', 16
 ylabel('% Occupied (E/Emax)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
 
+%Plot protection from tonic seizures
+figure;
+plot(Time, P_tonic, 'linewidth', 3);
+title('Protection Against Tonic Seizures', 'FontSize', 16);
+ylabel('% Protection', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
+
+%Plot protection from clonic seizures
+figure;
+plot(Time, P_clonic, 'linewidth', 3);
+title('Protection Against Clonic Seizures', 'FontSize', 16);
+ylabel('% Protection', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
+
 
 %% Repeated doses, 500 mg every 12 hours
 % PARAMETERS
