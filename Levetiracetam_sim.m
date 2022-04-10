@@ -1,4 +1,4 @@
-function [Conc,Time,AUC,Ctrough, Effect] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Rmax, MASS_BAL_VIS, DOSEFREQ);
+function [Conc,Time,AUC,Ctrough, R, E, P_tonic, P_clonic] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Kd, MASS_BAL_VIS, DOSEFREQ);
 
 %% PARAMETERS
 p.q = 0;     % units: nmol/hr
@@ -6,6 +6,10 @@ p.V = V; % units: L (volume of distribution)
 p.kA  =  kA; % units: 1/hr (absorption rate constant
 p.kCL = kCL; %units: 1/hr (clearance rate constant)
 p.Dose = Dose; %mg
+alpha1 = 2.8366;
+beta1 = -154.44;
+alpha2 = 3.2205;
+beta2 = -169.11;
 
 y0 = [0 0 p.Dose]'; 
 % y0(1) = concentration in central compartment
@@ -43,7 +47,10 @@ Time = T1;
 end
 
 %Effect model for receptor occupancy
-Effect = (Rmax.*Y1(:,1))./(IC50+Y1(:,1));
+R = (100.*Y1(:,1))./(IC50+Y1(:,1));
+E = (100.*Y1(:,1))./(Kd+Y1(:,1));
+P_tonic = alpha1.*E+beta1;
+P_clonic = alpha2.*E+beta2;
 
 % MASS BALANCE
 InitialDrug = p.Dose;
