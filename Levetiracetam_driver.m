@@ -28,11 +28,20 @@ ylabel('[D] (mg/L)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
 ylim([0 50]);
 
+%Plot receptor occupancy for single dose using R/Rmax model
 figure;
 plot(Time, Receptor, 'linewidth', 3);
 title('SV2A Protein Receptor Occupancy by LEV After Single Dose', 'FontSize', 16);
-ylabel('% Occupied', 'FontSize', 12);
+ylabel('% Occupied (R/Rmax)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
+
+%Plot receptor occupancy for single dose using E/Emax model
+figure;
+plot(Time, Effect, 'linewidth', 3);
+title('SV2A Protein Receptor Occupancy by LEV After Single Dose', 'FontSize', 16);
+ylabel('% Occupied (E/Emax)', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
+
 
 %% Repeated doses, 500 mg every 12 hours
 % PARAMETERS
@@ -52,21 +61,26 @@ Kd = 1.3617; % units: mg/L
 
 %% STEP 2:
 % Identify and simulate key time-dependent variables for a range of doses
-
 % Perform sensitivity analysis for model parameters for key metrics of treatment efficacy
 
 %% SIMULATIONS
 
-% Simulate range of doses for key PK/PD variables:
+% Simulate range of doses for key PK/PD variables: 
+% Concentration in central compartment
+% Drug cleared? (CURRENTLY NOT INCLUDED IN OUTPUT OF SIMULATION)
+% Receptor occupancy (2 models)
+% Protection from tonic seizures
+% Protection from clonic seizures
 
-%First key variable: drug concentration in central compartment
+% Initialize matrices to store outputs
 Conc = [];
 Time = [];
 Receptor = [];
 Effect = [];
 P_tonic = [];
 P_clonic = [];
-%Test range of doses 250-1500mg
+
+%Simulate range of drug doses 250-1500mg
 for i=1:6
     Dose = 250*i;
     [Conc1, Time1, AUC(i), Ctrough(i), Receptor1, Effect1, P_tonic1, P_clonic1] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1);
@@ -90,8 +104,32 @@ end
     leg = legend('250', '500', '750', '1000', '1250', '1500');
     title(leg, 'Dose (mg)');
     
-% Second key variable: PD Effect Model
-
+%Plot receptor occupancy for range of doses with two models
+%R/Rmax model
+figure; 
+ax1=subplot(2,1,1); 
+for i = 1:6
+    hold on;
+    plot(ax1, Time(:,i), Receptor(:,i), 'linewidth',3);
+end
+    title('R/Rmax', 'FontSize', 20);
+    ylabel('% Occupied', 'FontSize', 16);
+    xlabel('Time (hrs)', 'FontSize', 16);
+    leg = legend('250', '500', '750', '1000', '1250', '1500');
+    title(leg, 'Dose (mg)');
+    
+%E/Emax model
+ax2=subplot(2,1,2); 
+for i = 1:6
+    hold on;
+    plot(ax2, Time(:,i), Effect(:,i), 'linewidth',3);
+end
+    title('E/Emax', 'FontSize', 20);
+    ylabel('% Occupied', 'FontSize', 16);
+    xlabel('Time (hrs)', 'FontSize', 16);
+    leg = legend('250', '500', '750', '1000', '1250', '1500');
+    title(leg, 'Dose (mg)');
+    
 %Plot P_tonic for range of doses
 figure; 
 for i = 1:6
@@ -104,7 +142,7 @@ end
     leg = legend('250', '500', '750', '1000', '1250', '1500');
     title(leg, 'Dose (mg)');
 
-% Third key variable: PD Effect Model
+% Plot P_clonic for range of doses
 figure; 
 for i = 1:6
     hold on;
@@ -116,7 +154,8 @@ end
     leg = legend('250', '500', '750', '1000', '1250', '1500');
     title(leg, 'Dose (mg)');
 
-%% Perform sensitivity analysis for AUC and Ctrough for parameters
+    
+%% Perform sensitivity analysis for AUC and Ctrough for PK parameters
 
 % Model parameters for array p
 q = 0;     % units: nmol/hr
@@ -161,6 +200,9 @@ for i=1:length(p0)
     ptonic = [ptonic ptonic1];
     pclonic = [pclonic pclonic1];
     
+    % CAN ADD SENSITIVITY ANALYSIS FOR PD EFFECTS TOO (NEED TO DEFINE
+    % METRICS FIRST)
+    
     Sens(i) = ((auc(i)-auc0)/auc0)/((p(i)-p0(i))/p0(i)); % relative sensitivity vs parameter
     SensB(i) = ((auc(i)-auc0))/((p(i)-p0(i))); % absolute sensitivity vs parameter
     SensAbs(i) = ((auc(i)-auc0)/auc0); % relative change (not normalized to parameter)
@@ -176,13 +218,13 @@ for i=1:length(p0)
     end
 end
 
-%Concentration Plots
+%Concentration Plots (Sensitivity Analysis)
 figure;
 hold on
 for i=1:(length(p0))
     plot(t(:,i+1),y(:,i));
 end
-ax = gca; % assign a handle (ax) for the current axes
+ax = gca; 
 ax.FontSize = 14;
 ylabel('Concentration, Y')
 xlabel('Time (hr)')
@@ -198,7 +240,7 @@ for i=1:length(p0)
     plot(t(:,i+1),SensTarr(:,i),'LineWidth',3);
     text(t(end,i+1)+.5,SensTarr(end,i),strcat(p0labels{i},{''}),'HorizontalAlignment','left','Color',colors(i,:));
 end
-ax = gca; % assign a handle (ax) for the current axes
+ax = gca;
 ax.FontSize = 14;
 ylabel({'Relative sensitivity of concentration','(dY/Y)/(dP/P)'})
 xlabel('Time (hr)')
@@ -250,8 +292,7 @@ figure;
     
 %% Need to do global sensitivity analysis in addition or instead of LSA???
     
-
-
+%% Need sensitivity analysis for PD parameters? (IC50 and Kd)
 
 %% STEP 3:
 %Population variability--varying ka and kcl in children and adults
