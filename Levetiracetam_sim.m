@@ -1,4 +1,4 @@
-function [Conc,Time,AUC,Ctrough, R, E, P_tonic, P_clonic] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Kd, MASS_BAL_VIS, DOSEFREQ);
+function [Conc,Time,AUC,Ctrough, R, E, P_tonic, P_clonic] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Kd, MASS_BAL_VIS, DOSEFREQ, MISSED);
 
 %% PARAMETERS
 p.q = 0;     % units: nmol/hr
@@ -18,6 +18,8 @@ y0 = [0 0 p.Dose]';
 
 %% SIMULATIONS
 
+DrugIn = [];
+
 if DOSEFREQ == 0
 %Single dose
 y0 = [0 0 p.Dose]'; % Initial Conditions; units: mg/L
@@ -33,18 +35,80 @@ if DOSEFREQ == 1
 y0 = [0 0 p.Dose]'; % Initial Conditions; units: mg/L
 options = odeset('MaxStep',5e-2, 'AbsTol', 1e-5,'RelTol', 1e-5,'InitialStep', 1e-2);
 Y1 = [];
+
 for i = 1:10
 [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
 Y1 = [Y1; Ystep];
 y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
 y0(3) = y0(3) + p.Dose;
+DrugAdded = floor(T./TimeLen)*p.Dose;
+DrugIn = [DrugIn; DrugAdded];
+
+if i == 5 && (MISSED == 5 || MISSED == 6)
+    y0(3) = y0(3) - p.Dose;
+end
+
+if i == 6 && MISSED == 5
+    y0(3) = y0(3) + p.Dose; 
+end
+
 end
 T1 = [0:TimeLen/240:TimeLen*10-TimeLen/240];
-CurrentD1 = Y1(:,1)*p.V + Y1(:,3) ; % Total drug amount in system
+CurrentD1 = Y1(:,1)*p.V + Y1(:,3); % Total drug amount in system
 Conc = Y1(:,1);
 Time = T1;
 
 end
+
+if DOSEFREQ == 2
+% Repeated dosing
+y0 = [0 0 p.Dose]'; % Initial Conditions; units: mg/L
+options = odeset('MaxStep',5e-2, 'AbsTol', 1e-5,'RelTol', 1e-5,'InitialStep', 1e-2);
+Y1 = [];
+
+%Normal dosing for first 4 doses
+for i = 1:4
+[T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
+Y1 = [Y1; Ystep];
+y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
+y0(3) = y0(3) + p.Dose;
+DrugAdded = floor(T./TimeLen)*p.Dose;
+DrugIn = [DrugIn; DrugAdded];
+end
+
+%Takes 5th dose normally but forgets to take 6th dose
+    [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:(TimeLen*(MISSED/5+1)-TimeLen/240)],y0,options,p); % simulate model
+    Y1 = [Y1; Ystep];
+    y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
+    y0(3) = y0(3) + p.Dose;
+    DrugAdded = floor(T./(TimeLen*(MISSED/5+1)))*p.Dose;
+    DrugIn = [DrugIn; DrugAdded];
+
+%Takes 6th dose later
+    [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:(TimeLen*(1-MISSED/5)-TimeLen/240)],y0,options,p); % simulate model
+    Y1 = [Y1; Ystep];
+    y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
+    y0(3) = y0(3) + p.Dose;
+    DrugAdded = floor(T./(TimeLen*(1-MISSED/5)))*p.Dose;
+    DrugIn = [DrugIn; DrugAdded];
+
+%Returns to normal dosing for doses 7-10
+for i = 1:4
+[T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
+Y1 = [Y1; Ystep];
+y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
+y0(3) = y0(3) + p.Dose;
+DrugAdded = floor(T./TimeLen)*p.Dose;
+DrugIn = [DrugIn; DrugAdded];
+end
+
+T1 = [0:TimeLen/240:TimeLen*10-TimeLen/240];
+CurrentD1 = Y1(:,1)*p.V + Y1(:,3); % Total drug amount in system
+Conc = Y1(:,1);
+Time = T1;
+
+end
+
 
 %Effect models for receptor occupancy
 R = (100.*Y1(:,1))./(IC50+Y1(:,1)); %Percent receptors occupied based on IC50
@@ -54,13 +118,13 @@ P_clonic = alpha2.*E+beta2; %Protection from clonic seizures based on receptor o
 
 % MASS BALANCE
 InitialDrug = p.Dose;
-DrugIn = floor(T1./TimeLen)*p.Dose;
+%DrugIn = floor(T1./TimeLen)*p.Dose;
 DrugIn = DrugIn';
 if DOSEFREQ == 0
 DrugIn = 0;
 end
 DrugOut = Y1(:,2);
-BalanceD1 = DrugIn - DrugOut - CurrentD1 + InitialDrug ; %(zero = balance)
+BalanceD1 = DrugIn - DrugOut - CurrentD1 + InitialDrug; %(zero = balance)
 
 % Add an automated check/report on mass balance, since we don't want to 
 % look at hundreds of mass balance graphs
