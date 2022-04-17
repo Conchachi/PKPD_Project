@@ -68,9 +68,10 @@ kCL = 0.096; %units: 1/hr (clearance rate constant)
 Dose = 500; %mg
 TimeLen = 12; %hours between doses
 MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
-DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing, 2 for missed dose
+DOSEFREQ = 2; %Set to 0 for single dose, 1 for repeated dosing or skipped or double dose, 2 for delayed dose
 IC50 = 2.43; %mg/L
 Kd = 1.3617; % units: mg/L
+MISSED = 4;
 
 %Run simulation for repeated doses and print concentrations, amounts, and mass balance
 [Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
