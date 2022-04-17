@@ -109,6 +109,10 @@ for i=1:6
     P_clonic = [P_clonic P_clonic1];
 end
 
+%Print AUC and Ctrough for range of doses
+AUC
+Ctrough
+
 %Plot drug concentrations for range of doses
 figure; 
 for i = 1:6

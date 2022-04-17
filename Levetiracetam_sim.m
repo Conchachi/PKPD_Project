@@ -5,13 +5,13 @@ p.q = 0;     % units: nmol/hr
 p.V = V; % units: L (volume of distribution)
 p.kA  =  kA; % units: 1/hr (absorption rate constant
 p.kCL = kCL; %units: 1/hr (clearance rate constant)
-p.Dose = Dose; %mg
+p.Dose = Dose;
 alpha1 = 2.8366;
 beta1 = -154.44;
 alpha2 = 3.2205;
 beta2 = -169.11;
 
-y0 = [0 0 p.Dose]'; 
+y0 = [0 0 Dose]'; 
 % y0(1) = concentration in central compartment
 % y0(2) = amount cleared
 % y0(3) = amount in gut 
@@ -20,7 +20,7 @@ y0 = [0 0 p.Dose]';
 
 %% Single dose
 if DOSEFREQ == 0
-y0 = [0 0 p.Dose]'; % Initial Conditions; units: mg/L
+y0 = [0 0 Dose]'; % Initial Conditions; units: mg/L
 options = odeset('MaxStep',5e-2, 'AbsTol', 1e-5,'RelTol', 1e-5,'InitialStep', 1e-2);
 [T1,Y1] = ode45(@Levetiracetam_eqns,[0 TimeLen],y0,options,p); % simulate model
 CurrentD1 = Y1(:,1)*p.V + Y1(:,3) ; % Total drug amount in system
@@ -34,7 +34,7 @@ end
 % MISSED = 6 --> skipped dose
 
 if DOSEFREQ == 1
-y0 = [0 0 p.Dose]'; % Initial Conditions; units: mg/L
+y0 = [0 0 Dose]'; % Initial Conditions; units: mg/L
 options = odeset('MaxStep',5e-2, 'AbsTol', 1e-5,'RelTol', 1e-5,'InitialStep', 1e-2);
 Y1 = [];
 DrugIn = [];
@@ -44,32 +44,32 @@ for i = 1:10
 [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
 Y1 = [Y1; Ystep];
 y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
-y0(3) = y0(3) + p.Dose;
+y0(3) = y0(3) + Dose;
 
 %Calculating DrugIn depending on time step 
-DrugAdded = ones(length(Ystep),1)*(i-1)*p.Dose;
+DrugAdded = ones(length(Ystep),1)*(i-1)*Dose;
 
 %5th dose taken normally but next dose is skipped
 if i == 5 && (MISSED == 5 || MISSED == 6)
-    y0(3) = y0(3) - p.Dose;
+    y0(3) = y0(3) - Dose;
 end
 
 %Double dosing
 %Next dose is double dose and previous DrugIn was skipped
 if i == 6 && MISSED == 5
-    y0(3) = y0(3) + p.Dose; %double dose next dose
-    DrugAdded = ones(length(Ystep),1)*(i-2)*p.Dose; %no drug this dose
+    y0(3) = y0(3) + Dose; %double dose next dose
+    DrugAdded = ones(length(Ystep),1)*(i-2)*Dose; %no drug this dose
 end
 
 %Following dose is 2x DrugIn
 if i == 7 && MISSED == 5
-    DrugAdded = ones(length(Ystep),1)*(i-1)*p.Dose;
+    DrugAdded = ones(length(Ystep),1)*(i-1)*Dose;
 end
 
 %Skipped dosing (not re-taken)
 %All doses following the skipped dose are 1 less
 if i > 5 && MISSED == 6
-    DrugAdded = ones(length(Ystep),1)*(i-2)*p.Dose;
+    DrugAdded = ones(length(Ystep),1)*(i-2)*Dose;
 end
 
 %Amount of drug going into system
@@ -101,8 +101,8 @@ for i = 1:4
 [T_12,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
 Y1 = [Y1; Ystep];
 y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
-y0(3) = y0(3) + p.Dose;
-DrugAdded = ones(length(Ystep),1)*(i-1)*p.Dose;
+y0(3) = y0(3) + Dose;
+DrugAdded = ones(length(Ystep),1)*(i-1)*Dose;
 DrugIn = [DrugIn; DrugAdded];
 end
 
@@ -110,17 +110,17 @@ end
     [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:(TimeLen*(MISSED/5+1)-TimeLen/240)],y0,options,p); % simulate model
     Y1 = [Y1; Ystep];
     y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
-    y0(3) = y0(3) + p.Dose;
-    DrugAdded = ones(length(T_12),1)*4*p.Dose; %normal dosing (has to be same time length)
-    DrugNext = ones(length(T_12)*(MISSED/5),1)*4*p.Dose; %missed/delayed dose
+    y0(3) = y0(3) + Dose;
+    DrugAdded = ones(length(T_12),1)*4*Dose; %normal dosing (has to be same time length)
+    DrugNext = ones(length(T_12)*(MISSED/5),1)*4*Dose; %missed/delayed dose
     DrugIn = [DrugIn; DrugAdded];
 
 %Takes 6th dose later
     [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:(TimeLen*(1-MISSED/5)-TimeLen/240)],y0,options,p); % simulate model
     Y1 = [Y1; Ystep];
     y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
-    y0(3) = y0(3) + p.Dose;
-    DrugAdded = ones(length(Ystep),1)*5*p.Dose; %Missed/delayed dose
+    y0(3) = y0(3) + Dose;
+    DrugAdded = ones(length(Ystep),1)*5*Dose; %Missed/delayed dose
     DrugNext = [DrugNext; DrugAdded];
     DrugIn = [DrugIn; DrugNext];
 
@@ -129,8 +129,8 @@ for i = 7:10
 [T,Ystep] = ode45(@Levetiracetam_eqns,[0:TimeLen/240:TimeLen-TimeLen/240],y0,options,p); % simulate model
 Y1 = [Y1; Ystep];
 y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
-y0(3) = y0(3) + p.Dose;
-DrugAdded = ones(length(Ystep),1)*(i-1)*p.Dose;
+y0(3) = y0(3) + Dose;
+DrugAdded = ones(length(Ystep),1)*(i-1)*Dose;
 DrugIn = [DrugIn; DrugAdded];
 end
 
@@ -149,7 +149,7 @@ P_tonic = alpha1.*E+beta1; %Protection from tonic seizures based on receptor occ
 P_clonic = alpha2.*E+beta2; %Protection from clonic seizures based on receptor occupancy
 
 %% MASS BALANCE
-InitialDrug = p.Dose;
+InitialDrug = Dose;
 DrugOut = Y1(:,2);
 BalanceD1 = DrugIn - DrugOut - CurrentD1 + InitialDrug; %(zero = balance)
 
