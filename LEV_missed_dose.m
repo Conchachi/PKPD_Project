@@ -31,23 +31,30 @@ Pclonic_missed = [];
 
 %Missed doses
 for MISSED = 1:6
-[y_m,t_m,auc_m(MISSED),ctrough_m(MISSED),receptor_m,effect_m,P_tonic_m,P_clonic_m] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,MISSED);
+[y_m,t_m,auc_m(MISSED),ctrough_m(MISSED),receptor_m,effect_m,P_tonic_m,P_clonic_m,AUEC_tonic(MISSED) ,E_tonic_trough(MISSED) ,AUEC_clonic(MISSED) ,E_clonic_trough(MISSED)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,MISSED);
 
 % Calculate Cmin and Cmax for missed doses
 y_trough = y_m(240:length(y_m));
+ptonic_trough = P_tonic_m(240:length(P_tonic_m));
+pclonic_trough = P_clonic_m(240:length(P_clonic_m));
 Cmin(MISSED) = min(y_trough, [], 'all');
 Cmax(MISSED) = max(y_m, [], 'all');
+Tonic_min(MISSED) = min(ptonic_trough, [], 'all');
+Tonic_max(MISSED) = max(P_tonic_m, [], 'all');
+Clonic_min(MISSED) = min(pclonic_trough, [], 'all');
+Clonic_max(MISSED) = max(P_clonic_m, [], 'all');
+
 
 % Plot concentrations
 figure;
 plot(t_m, y_m, 'linewidth', 3);
 if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late');
+PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Concentrations)');
     if MISSED == 5
-        PLOT_title = strcat(PLOT_title, ' (Double Dose)');
+        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
     end
 else 
-    PLOT_title = 'Skipped Dose';
+    PLOT_title = 'Skipped Dose (Concentrations)';
 end
 
 title(PLOT_title, 'FontSize', 16);
@@ -59,12 +66,12 @@ ylim([0 18]);
 figure;
 plot(t_m, P_tonic_m, 'linewidth', 3);
 if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late');
+PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Tonic Seizure Protection)');
     if MISSED == 5
-        PLOT_title = strcat(PLOT_title, ' (Double Dose)');
+        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
     end
 else 
-    PLOT_title = 'Skipped Dose';
+    PLOT_title = 'Skipped Dose (Tonic Seizure Protection)';
 end
 
 title(PLOT_title, 'FontSize', 16);
@@ -75,12 +82,12 @@ xlabel('Time (hrs)', 'FontSize', 12);
 figure;
 plot(t_m, P_clonic_m, 'linewidth', 3);
 if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late');
+PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Clonic Seizure Protection)');
     if MISSED == 5
-        PLOT_title = strcat(PLOT_title, ' (Double Dose)');
+        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
     end
 else 
-    PLOT_title = 'Skipped Dose';
+    PLOT_title = 'Skipped Dose (Clonic Seizure Protection)';
 end
 
 title(PLOT_title, 'FontSize', 16);
@@ -101,6 +108,12 @@ end
 Cmin
 Cmax
 auc_m
+Tonic_min
+Tonic_max
+AUEC_tonic
+Clonic_min
+Clonic_max
+AUEC_clonic
 
 %{
 %% Save data for missed dosing to import into R
@@ -116,4 +129,8 @@ save MissedDoseReceptor.mat Receptor_missed;
 save MissedDoseEffect.mat Effect_missed;
 save MissedDoseP_tonic.mat P_tonic_missed;
 save MissedDoseP_clonic.mat P_clonic_missed;
+save MissedDoseAUEC_tonic.mat AUEC_tonic;
+save MissedDoseAUEC_clonic.mat AUEC_clonic;
+save MissedDoseE_tonic_trough.mat E_tonic_trough;
+save MissedDoseE_clonic_trough.mat E_clonic_trough;
 %}

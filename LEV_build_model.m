@@ -20,7 +20,7 @@ MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
 DOSEFREQ = 0; %Set to 0 for single dose, 1 for repeated dosing
 
 %Run simulation for single dose and print concentrations, amounts, and mass balance
-[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
+[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
 
 % Plot single dose to compare to paper figure
 figure;
@@ -77,7 +77,7 @@ MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
 DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
 
 %Run simulation for repeated doses and print concentrations, amounts, and mass balance
-[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
+[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
 
 %% STEP 2:
 % Identify and simulate key time-dependent variables for a range of doses
@@ -101,7 +101,7 @@ P_clonic = [];
 %Simulate range of drug doses 250-1500mg
 for i=1:6
     Dose = 250*i;
-    [Conc1, Time1, AUC(i), Ctrough(i), Receptor1, Effect1, P_tonic1, P_clonic1] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,0);
+    [Conc1, Time1, AUC(i), Ctrough(i), Receptor1, Effect1, P_tonic1, P_clonic1, AUEC_tonic(i) ,E_tonic_trough(i) ,AUEC_clonic(i) ,E_clonic_trough(i)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,0);
     Conc = [Conc Conc1];
     Time = [Time Time1'];
     Receptor = [Receptor Receptor1];
@@ -110,9 +110,13 @@ for i=1:6
     P_clonic = [P_clonic P_clonic1];
 end
 
-%Print AUC and Ctrough for range of drug doses
+%Print AUC and Ctrough/AUEC and Etrough for range of drug doses
 AUC
 Ctrough
+AUEC_tonic
+E_tonic_trough
+AUEC_clonic
+E_clonic_trough
 
 %Plot drug concentrations for range of doses
 figure; 
@@ -187,5 +191,10 @@ save DoseRangeReceptor.mat Receptor;
 save DoseRangeEffect.mat Effect;
 save DoseRangeP_tonic.mat P_tonic;
 save DoseRangeP_clonic.mat P_clonic;
+save DoseRangeAUEC_tonic.mat AUEC_tonic;
+save DoseRangeAUEC_clonic.mat AUEC_clonic;
+save DoseRangeE_tonic_trough.mat E_tonic_trough;
+save DoseRangeE_clonic_trough.mat E_clonic_trough;
+
 %}
 
