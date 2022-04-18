@@ -176,14 +176,16 @@ end
     leg = legend('250', '500', '750', '1000', '1250', '1500');
     title(leg, 'Dose (mg)');
 
-%Save data for repeated dosing for range of drug doses to import into R
-save Conc DoseRangeConc.mat;
-save Time DoseRangeTime.mat;
-save AUC DoseRangeAUC.mat;
-save Ctrough DoseRangeCtrough.mat;
-save Receptor DoseRangeReceptor.mat;
-save Effect DoseRangeEffect.mat;
-save P_tonic DoseRangeP_tonic.mat;
-save P_clonic DoseRangeP_clonic.mat;
-
+  %{
+%% Save data for repeated dosing for range of drug doses to import into R
+% Columns correspond to drug doses: 250, 500, 750, 1000, 1250, and 1500 mg
+save DoseRangeConc.mat Conc;
+save DoseRangeTime.mat Time;
+save DoseRangeAUC.mat AUC;
+save DoseRangeCtrough.mat Ctrough;
+save DoseRangeReceptor.mat Receptor;
+save DoseRangeEffect.mat Effect;
+save DoseRangeP_tonic.mat P_tonic;
+save DoseRangeP_clonic.mat P_clonic;
+%}
 

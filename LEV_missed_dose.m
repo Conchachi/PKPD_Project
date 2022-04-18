@@ -89,11 +89,11 @@ xlabel('Time (hrs)', 'FontSize', 12);
 
 
 %Save concentration and effect data to plot in R
-Conc_missed = [Conc_missed; y_m];
-Receptor_missed = [Receptor_missed; receptor_m];
-Effect_missed = [Effect_missed; effect_m];
-Ptonic_missed = [Ptonic_missed; P_tonic_m];
-Pclonic_missed = [Pclonic_missed; P_clonic_m];
+Conc_missed = [Conc_missed y_m];
+Receptor_missed = [Receptor_missed receptor_m];
+Effect_missed = [Effect_missed effect_m];
+Ptonic_missed = [Ptonic_missed P_tonic_m];
+Pclonic_missed = [Pclonic_missed P_clonic_m];
 end
 
 %Print Cmin, Cmax, and AUCs to compare
@@ -102,12 +102,18 @@ Cmin
 Cmax
 auc_m
 
-%Save data for repeated dosing for range of drug doses to import into R
-save Conc_missed MissedDoseConc.mat;
-save t_m MissedDoseTime.mat;
-save auc_m MissedDoseAUC.mat;
-save ctrough_m MissedDoseCtrough.mat;
-save Receptor_missed MissedDoseReceptor.mat;
-save Effect_missed MissedDoseEffect.mat;
-save P_tonic_missed MissedDoseP_tonic.mat;
-save P_clonic_missed MissedDoseP_clonic.mat;
+%{
+%% Save data for missed dosing to import into R
+
+% Columns correspond with missed doses taken m/5 (1), 2m/5 (2), 3m/5 (3), 
+% and 4m/5 (4) hours late and double dose (5) and skipped dose (6)
+
+save MissedDoseConc.mat Conc_missed;
+save MissedDoseTime.mat t_m;
+save MissedDoseAUC.mat auc_m;
+save MissedDoseCtrough.mat ctrough_m;
+save MissedDoseReceptor.mat Receptor_missed;
+save MissedDoseEffect.mat Effect_missed;
+save MissedDoseP_tonic.mat P_tonic_missed;
+save MissedDoseP_clonic.mat P_clonic_missed;
+%}
