@@ -122,6 +122,7 @@ AUEC_clonic
 % and 4m/5 (4) hours late and double dose (5) and skipped dose (6)
 
 save data/MissedDoseConc.mat Conc_missed;
+t_m = t_m'; % optimize for R visualization
 save data/MissedDoseTime.mat t_m;
 save data/MissedDoseAUC.mat auc_m;
 save data/MissedDoseCtrough.mat ctrough_m;
