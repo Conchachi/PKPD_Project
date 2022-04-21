@@ -121,17 +121,17 @@ AUEC_clonic
 % Columns correspond with missed doses taken m/5 (1), 2m/5 (2), 3m/5 (3), 
 % and 4m/5 (4) hours late and double dose (5) and skipped dose (6)
 
-save data/MissedDoseConc.mat Conc_missed;
+save missed_dose_data/MissedDoseConc.mat Conc_missed;
 t_m = t_m'; % optimize for R visualization
-save data/MissedDoseTime.mat t_m;
-save data/MissedDoseAUC.mat auc_m;
-save data/MissedDoseCtrough.mat ctrough_m;
-save data/MissedDoseReceptor.mat Receptor_missed;
-save data/MissedDoseEffect.mat Effect_missed;
-save data/MissedDoseP_tonic.mat Ptonic_missed;
-save data/MissedDoseP_clonic.mat Pclonic_missed;
-save data/MissedDoseAUEC_tonic.mat AUEC_tonic;
-save data/MissedDoseAUEC_clonic.mat AUEC_clonic;
-save data/MissedDoseE_tonic_trough.mat E_tonic_trough;
-save data/MissedDoseE_clonic_trough.mat E_clonic_trough;
+save missed_dose_data/MissedDoseTime.mat t_m;
+save missed_dose_data/MissedDoseAUC.mat auc_m;
+save missed_dose_data/MissedDoseCtrough.mat ctrough_m;
+save missed_dose_data/MissedDoseReceptor.mat Receptor_missed;
+save missed_dose_data/MissedDoseEffect.mat Effect_missed;
+save missed_dose_data/MissedDoseP_tonic.mat Ptonic_missed;
+save missed_dose_data/MissedDoseP_clonic.mat Pclonic_missed;
+save missed_dose_data/MissedDoseAUEC_tonic.mat AUEC_tonic;
+save missed_dose_data/MissedDoseAUEC_clonic.mat AUEC_clonic;
+save missed_dose_data/MissedDoseE_tonic_trough.mat E_tonic_trough;
+save missed_dose_data/MissedDoseE_clonic_trough.mat E_clonic_trough;
 %
