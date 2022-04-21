@@ -5,10 +5,10 @@
 
 % Model parameters for array p
 q = 0;     % units: nmol/hr
-V = 40; % units: L (volume of distribution)
-kA  =  2.44; % units: 1/hr (absorption rate constant)
-kCL = 0.096; %units: 1/hr (clearance rate constant)
-Dose = 500; %mg
+V = 21.9; % units: L (volume of distribution)
+kA  =  3.83; % units: 1/hr (absorption rate constant)
+kCL = 0.113; %units: 1/hr (clearance rate constant)
+Dose = 400; %mg
 TimeLen = 12; %hours between doses
 IC50 = 2.43; %mg/L
 Kd = 1.3617; % units: mg/L
@@ -205,6 +205,7 @@ xlabel('Time (hr)')
     
 %}
     
+    %{
     %% Save data for sensitivity analysis to import into R
     % Columns correspond to parameters kA, V, kCL, Dose, and TimeLen 
     save SensAUC.mat Sens;
@@ -213,7 +214,7 @@ xlabel('Time (hr)')
     save SensClonicAUEC.mat SensPD_ClonicAUC;
     save SensTonicEtrough.mat SensPD_TonicEtrough;
     save SensClonicEtrough.mat SensPD_ClonicEtrough;
-    
+    %}
     
 %% Need to do global sensitivity analysis in addition or instead of LSA???
     
