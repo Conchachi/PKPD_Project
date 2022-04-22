@@ -42,6 +42,10 @@ CL = CLtemp; % This is the final clearance rate distribution
 %Use CL to generate list of kcl (kcl = CL/V), assuming V = constant = 21.9 L
 kCLPPK = CL./21.9;
 
+%Save data to import into R
+save kCL_PopVar.mat kCLPPK;
+save kA_PopVar.mat kaPPK;
+
 %% Run Simulations
 
 % PARAMETERS
@@ -193,4 +197,3 @@ xlabel('ka (1/hr)', 'FontSize', 12);
 outputs_kCL_kA_PopVar = [auc', ctrough', auecT', etroughT', auecC', etroughC'];
 
 save kCL_kA_PopVar_params.mat outputs_kCL_kA_PopVar;
-
