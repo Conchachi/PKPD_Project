@@ -92,6 +92,7 @@ tonic <- ggplot(data = df_missed,
     y = 'Protection From Seziures (%)'
   ) +
   scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+  ylim(0, 100) +
   my_theme 
 tonic
 ggsave('plots/missed_dose_tonic_time.pdf', width=8, height=5)
@@ -111,6 +112,7 @@ clonic <- ggplot(data = df_missed,
     y = 'Protection From Seziures (%)'
   ) +
   scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+  ylim(0, 100) +
   my_theme 
 clonic
 ggsave('plots/missed_dose_clonic_time.pdf', width=8, height=5)
