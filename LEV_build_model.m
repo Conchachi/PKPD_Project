@@ -69,6 +69,41 @@ save P_clonic SingleDoseP_clonic.mat;
 %}
 
 
+%% Repeated dosing, 400 mg 
+
+% PARAMETERS
+q = 0;     % units: nmol/hr
+V = 21.9; % units: L (volume of distribution)
+kA  =  3.83; % units: 1/hr (absorption rate constant)
+kCL = 0.113; %units: 1/hr (clearance rate constant)
+IC50 = 2.43; %mg/L
+Kd = 1.3617; % units: mg/L
+MISSED = 0; %for missed dose analysis, not relevant here
+Dose = 400; %mg
+TimeLen = 12; %hours between doses
+MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
+DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+
+%Run simulation for repeated dose and print concentrations, amounts, and mass balance
+[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
+
+%Import into R to plot
+save Conc RepeatedDoseConc.mat;
+save Time RepeatedDoseTime.mat;
+save Receptor RepeatedDoseReceptor.mat;
+save Effect RepeatedDoseEffect.mat;
+save P_tonic RepeatedDoseP_tonic.mat;
+save P_clonic RepeatedDoseP_clonic.mat;
+
+
+%Plot
+% Plot single dose to compare to paper figure
+figure;
+plot(Time, Conc(:,1), 'linewidth', 3);
+title('Concentration of Levetiracetam in Compartment: Repeated Dosing', 'FontSize', 16);
+ylabel('[D] (mg/L)', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
+
 %% STEP 2:
 % Identify and simulate key time-dependent variables for a range of doses
 
