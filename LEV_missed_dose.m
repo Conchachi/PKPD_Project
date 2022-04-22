@@ -3,7 +3,7 @@ close all;
 
 %% Missed Dose Analysis
 
-% Repeated doses, 500 mg every 12 hours
+% Repeated doses, 400 mg every 12 hours
 % PARAMETERS
 q = 0;     % units: nmol/hr
 V = 21.9; % units: L (volume of distribution)
@@ -12,7 +12,7 @@ kCL = 0.113; %units: 1/hr (clearance rate constant)
 Dose = 400; %mg
 TimeLen = 12; %hours between doses
 MASS_BAL_VIS = 0; %Set to 1 to visualize mass balance
-DOSEFREQ = 2; %Set to 0 for single dose, 1 for repeated dosing, 2 for missed dose
+DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
 IC50 = 2.43; %mg/L
 Kd = 1.3617; % units: mg/L
 
@@ -47,24 +47,39 @@ Tonic_max(MISSED) = max(P_tonic_m, [], 'all');
 Clonic_min(MISSED) = min(pclonic_trough, [], 'all');
 Clonic_max(MISSED) = max(P_clonic_m, [], 'all');
 
-
+%% Plotting (commented out because plotting in R)
+%{
 % Plot concentrations
 figure;
-plot(t_m, y_m, 'linewidth', 3);
+hold on;
+yyaxis left;
+ylim([0 40]);
+ylabel('[D] (mg/L)', 'FontSize', 12);
+plot(t_m, y_m);
+
 if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Concentrations)');
+PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late');
     if MISSED == 5
         PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
     end
 else 
-    PLOT_title = 'Skipped Dose (Concentrations)';
+    PLOT_title = 'Skipped Dose';
 end
 
 title(PLOT_title, 'FontSize', 16);
-ylabel('[D] (mg/L)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
-ylim([0 18]);
 
+yyaxis right;
+ylim([0 100]);
+ylabel('Protection From Seizures (%)', 'FontSize', 12);
+plot(t_m, P_tonic_m);
+plot(t_m, P_clonic_m, 'r', 'linewidth', 2);
+legend('Plasma Concentration', 'Tonic Seizure Protection', 'Clonic Seizure Protection', 'Location', 'northwest');
+hold off;
+%}
+
+%{
+%% If want to plot each individually
 %Plot tonic seizure protection
 figure;
 plot(t_m, P_tonic_m, 'linewidth', 3);
@@ -96,9 +111,10 @@ end
 title(PLOT_title, 'FontSize', 16);
 ylabel('Protection From Clonic Seizures (%)', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
+%}
 
 
-%Save concentration and effect data to plot in R
+%% Save concentration and effect data for each missed dose case
 Conc_missed = [Conc_missed y_m];
 Receptor_missed = [Receptor_missed receptor_m];
 Effect_missed = [Effect_missed effect_m];
@@ -118,7 +134,7 @@ Clonic_min
 Clonic_max
 AUEC_clonic
 
-%
+
 %% Save data for missed dosing to import into R
 
 % Columns correspond with missed doses taken m/5 (1), 2m/5 (2), 3m/5 (3), 
@@ -137,6 +153,7 @@ save missed_dose_data/MissedDoseAUEC_tonic.mat AUEC_tonic;
 save missed_dose_data/MissedDoseAUEC_clonic.mat AUEC_clonic;
 save missed_dose_data/MissedDoseE_tonic_trough.mat E_tonic_trough;
 save missed_dose_data/MissedDoseE_clonic_trough.mat E_clonic_trough;
+
 
 %% Population variability with missed dosing
 
