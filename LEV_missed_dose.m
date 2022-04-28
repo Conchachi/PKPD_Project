@@ -33,6 +33,8 @@ Ptonic_missed = [];
 Pclonic_missed = [];
 
 %Missed doses
+ 
+
 for MISSED = 1:6
 [y_m,t_m,auc_m(MISSED),ctrough_m(MISSED),receptor_m,effect_m,P_tonic_m,P_clonic_m,AUEC_tonic(MISSED) ,E_tonic_trough(MISSED) ,AUEC_clonic(MISSED) ,E_clonic_trough(MISSED)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,MISSED);
 

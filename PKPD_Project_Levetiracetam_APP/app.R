@@ -151,7 +151,7 @@ df_missedr <- cbind(df_missedr, Pclonic_missed_pivotr['Pclonic'])
 # Create a theme
 my_theme <- theme_classic() +
   theme(
-    text = element_text(size = 20),
+    text = element_text(size = 15),
     plot.title = element_text(hjust = 0.5),
     axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
     axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
@@ -212,7 +212,7 @@ ui <-
     titlePanel(h1(
       strong('PKPD Project: Levetiracetam Missed Dose Analysis')
     )),
-    h2(
+    h3(
       'Shiny app modeling Missed Dose Analysis of Levetiracetam. Using literature knowledge of the Pharmacokinetic and Pharmacodynamic properties of Levetiracetam, this app demonstrates the effects of the',
       strong('number of consecutive missed doses'),
       'and the',
@@ -235,7 +235,7 @@ ui <-
         fluidRow(
           sliderInput(
             'timelen',
-            label =  h3('Select time range to observe:'),
+            label =  h4('Select time range to observe:'),
             min = 0,
             max = 119.95,
             value = c(0, 119.95),
@@ -243,7 +243,7 @@ ui <-
           ),
           selectInput(
             'num_skipdose',
-            label = h3(
+            label = h4(
               strong('For NUMBER OF MISSED DOSES'),
               br(),
               'Select the number of consecutive skipped doses:'
@@ -256,7 +256,7 @@ ui <-
           ),
           selectInput(
             'time_dif',
-            label = h3(
+            label = h4(
               strong('For TIME OF MISSED DOSE'),
               br(),
               'Select time at which missed dose is taken (hours):'
@@ -284,9 +284,9 @@ ui <-
         tabsetPanel(
           type = 'tabs',
           tabPanel(
-            h1('PKPD Characteristics and Mechanism of Action'),
-            h1(strong('Background')),
-            h2(
+            h4('PKPD Characteristics and Mechanism of Action'),
+            h3(strong('Background')),
+            h4(
               'Levetiracetam is one of the many FDA approved anti-epilepsy
                     drugs (AEDs) that are popularly prescribed to control seizures
                     and epileptic disorders. Generally, Levetiracetam has shown
@@ -300,11 +300,11 @@ ui <-
                     the pharmacokinetics and pharmacodynamics of the drug.'
             ),
             tags$img(src = 'https://www.drugs.com/img/mol/DB01202.mol.t.png'),
-            h3(
+            h5(
               em('DrugBank. (2022). Levetiracetam'),
               br(),
-              h1(strong('Pharmacokinetic Characteristics')),
-              h2(
+              h3(strong('Pharmacokinetic Characteristics')),
+              h4(
                 'Notably, Levetiracetam possesses several interesting pharmacokinetic
                     properties that make it an ideal drug of interest -
                     it is rapidly absorbed within 1.3 hours, with a bioavailability of
@@ -319,7 +319,7 @@ ui <-
                     as compared to other AEDs.'
               ),
               br(),
-              h2(
+              h4(
                 'These pharmacokinetic properties subsequently make Levetiracetam
                     an ideal drug to study. In our models and data, we visualized how',
                 strong('Missed Dose'),
@@ -328,8 +328,8 @@ ui <-
                     protection.'
               ),
               br(),
-              h1(strong('Mechanism of Action')),
-              h2(
+              h3(strong('Mechanism of Action')),
+              h4(
                 'Levetiracetam’s main target is synaptic vesicle protein 2A (SV2A),
                     a widely distributed isoform throughout the entire central nervous system.
                     Although other isoforms, such as SV2B and SV2C, are brain-specific,
@@ -337,7 +337,7 @@ ui <-
                     supporting SV2A as a drug target'
               ),
               tags$img(src = 'https://www.researchgate.net/profile/Karen_Garlitz/publication/276209133/figure/download/fig2/AS:614275974459427@1523466213864/Pre-and-post-excitatory-neuron-with-neurotransmitter-glutamate-Mechanism-of-action-of.png'),
-              h3(
+              h5(
                 'Landmark, C.J.',
                 em('CNS Drugs'),
                 ',2008; Deshpande, L.S., Front Neurol, 2014; Mruk, A.L., et al.,',
@@ -347,27 +347,27 @@ ui <-
             )
           ),
           tabPanel(
-            h1('Number of Missed Doses'),
+            h4('Number of Missed Doses'),
             verticalLayout(
-              h2(
+              h3(
                 strong(
                   'The plots shown below can interactively illustrate the effects of changing the number of consecutive missed doses.'
                 )
               ),
               br(),
-              column(8, plotlyOutput(outputId = "concrplot")),
+              column(15, plotlyOutput(outputId = "concrplot")),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(8, plotlyOutput(outputId = 'clonicrplot')),
+              column(15, plotlyOutput(outputId = 'clonicrplot')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(8, plotlyOutput(outputId = 'tonicrplot')),
+              column(15, plotlyOutput(outputId = 'tonicrplot')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
@@ -375,27 +375,27 @@ ui <-
             )
           ),
           tabPanel(
-            h1('Time of Missed Dose'),
+            h4('Time of Missed Dose'),
             verticalLayout(
-              h2(
+              h3(
                 strong(
                   'The plots shown below can interactively illustrate the effects of changing the time of the substituted missed dose.'
                 )
               ),
               br(),
-              column(8, plotlyOutput(outputId = "concplot")),
+              column(15, plotlyOutput(outputId = "concplot")),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(8, plotlyOutput(outputId = 'clonicplot')),
+              column(15, plotlyOutput(outputId = 'clonicplot')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(8, plotlyOutput(outputId = 'tonicplot')),
+              column(15, plotlyOutput(outputId = 'tonicplot')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
@@ -526,7 +526,7 @@ server <- function(input, output) {
       labs(title = 'Levetiracetam Concentration Over Time',
            x = 'Time (h)',
            y = '[D] (mg/L)') +
-      scale_color_brewer(name = 'Number of Consecutive Missed Doses', palette = 'Accent') +
+      scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
       my_theme
     plotly_build(concrplot)
   })
@@ -552,7 +552,7 @@ server <- function(input, output) {
       labs(title = 'Clonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
-      scale_color_brewer(name = 'Number of Consecutive Missed Doses', palette = 'Accent') +
+      scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
       my_theme
     plotly_build(clonicrplot)
   })
@@ -578,7 +578,7 @@ server <- function(input, output) {
       labs(title = 'Tonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
-      scale_color_brewer(name = 'Number of Consecutive Missed Doses', palette = 'Accent') +
+      scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
       my_theme
     plotly_build(tonicrplot)
   })
