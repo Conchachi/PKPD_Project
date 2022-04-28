@@ -11,18 +11,20 @@ library("ggplot2")
 library("viridis")
 
 # set theme for all plots
-theme1 <- theme_classic(base_size = 25) +
+theme1 <- theme_classic(base_size = 30) +
   theme(text = element_text(),
-         plot.title = element_text(hjust = 0),
+         plot.title = element_text(hjust = 0.075),
         #  axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
         #  axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
-        #  axis.text.x = element_text(margin = margin(5, 0, 0, 0)),
+         axis.text.x = element_text(size = 30),
+         axis.text.y = element_text(size = 26),
         #  axis.text.y = element_text(margin = margin(0, 5, 0, 0)),
         # #panel.grid.major.y = element_line(colour = "grey", size = 0.2),
         #panel.grid.minor.y = element_line(colour = "grey", size = 0.2),
         legend.position  = "bottom",
         legend.key.width = unit(2, 'cm'),
         legend.text = element_text(angle=45),
+        
         plot.title.position = "plot")
 
 # Load Data 
@@ -57,11 +59,11 @@ Ctrough_plot <- ggplot(data = df, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   geom_tile() +
   labs(title = 'A') +
   xlab('kCL (hr-1)') +
-  ylab('Hours between Doses (h)') +
+  ylab('Time between Doses (h)') +
   labs(fill='Ctrough (mg/L):') +
   scale_fill_viridis(discrete = FALSE) +
-  theme1 +
-  theme(axis.text.x = element_text(size = 14, angle = 0, vjust = 1.5))
+  theme1
+  #theme(axis.text.x = element_text(size = 14, angle = 0, vjust = 1.5))
 ggsave(filename = 'global_Ctrough.png', plot = Ctrough_plot, width = 12,
        height = 8)
 
