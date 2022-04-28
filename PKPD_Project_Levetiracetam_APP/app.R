@@ -212,7 +212,7 @@ ui <-
     titlePanel(h1(
       strong('PKPD Project: Levetiracetam Missed Dose Analysis')
     )),
-    h3(
+    h4(
       'Shiny app modeling Missed Dose Analysis of Levetiracetam. Using literature knowledge of the Pharmacokinetic and Pharmacodynamic properties of Levetiracetam, this app demonstrates the effects of the',
       strong('number of consecutive missed doses'),
       'and the',
@@ -309,8 +309,7 @@ ui <-
                     properties that make it an ideal drug of interest -
                     it is rapidly absorbed within 1.3 hours, with a bioavailability of
                     >95%. It can be modeled as a one-compartment model due to its equal distribution
-                    through the body.
-                    Around ⅔ of the drug will be cleared via renal excretion
+                    through the body. Around ⅔ of the drug will be cleared via renal excretion
                     unmetabolized, with minimal metabolization by the liver,
                     with renal clearance dependent on creatinine clearance.
                     As of the most recent research, the drug also does not seem
@@ -355,19 +354,19 @@ ui <-
                 )
               ),
               br(),
-              column(15, plotlyOutput(outputId = "concrplot")),
+              column(12, plotlyOutput(outputId = "concrplot")),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(15, plotlyOutput(outputId = 'clonicrplot')),
+              column(12, plotlyOutput(outputId = 'clonicrplot')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(15, plotlyOutput(outputId = 'tonicrplot')),
+              column(12, plotlyOutput(outputId = 'tonicrplot')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
@@ -383,19 +382,19 @@ ui <-
                 )
               ),
               br(),
-              column(15, plotlyOutput(outputId = "concplot")),
+              column(12, plotlyOutput(outputId = "concplot")),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(15, plotlyOutput(outputId = 'clonicplot')),
+              column(12, plotlyOutput(outputId = 'clonicplot')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(15, plotlyOutput(outputId = 'tonicplot')),
+              column(12, plotlyOutput(outputId = 'tonicplot')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
