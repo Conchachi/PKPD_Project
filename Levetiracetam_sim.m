@@ -145,8 +145,8 @@ end
 %% Effect models for receptor occupancy
 R = (100.*Y1(:,1))./(IC50+Y1(:,1)); %Percent receptors occupied based on IC50
 E = (100.*Y1(:,1))./(Kd+Y1(:,1)); %Percent receptors occupied based on Kd
-P_tonic = alpha1.*E+beta1; %Protection from tonic seizures based on receptor occupancy
-P_clonic = alpha2.*E+beta2; %Protection from clonic seizures based on receptor occupancy
+P_tonic = alpha2.*E+beta2; %Protection from tonic seizures based on receptor occupancy
+P_clonic = alpha1.*E+beta1; %Protection from clonic seizures based on receptor occupancy
 %P_tonicR = alpha1.*R+beta1;
 %P_clonicR = alpha2.*R+beta2;
 
