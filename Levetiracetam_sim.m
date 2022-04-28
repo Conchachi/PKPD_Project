@@ -153,11 +153,11 @@ P_clonic = alpha1.*E+beta1; %Protection from clonic seizures based on receptor o
 %% Updating negative values and normalizing
 ind = P_tonic<0;
 P_tonic(ind) = 0;
-P_tonic = P_tonic./(1.2922);
+P_tonic = P_tonic./(1.5294);
 
 ind2 = P_clonic<0;
 P_clonic(ind2) = 0;
-P_clonic = P_clonic./(1.5294);
+P_clonic = P_clonic./(1.2922);
 
 %{
 ind = P_tonicR<0;
