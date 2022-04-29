@@ -15,6 +15,7 @@ MASS_BAL_VIS = 0; %Set to 1 to visualize mass balance
 DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
 IC50 = 2.43; %mg/L
 Kd = 1.3617; % units: mg/L
+add_norm = 1;   % if 1, save the normal dose as well
 
 % Choose dose to miss 
 MISSED = 0; 
@@ -123,6 +124,18 @@ Effect_missed = [Effect_missed effect_m];
 Ptonic_missed = [Ptonic_missed P_tonic_m];
 Pclonic_missed = [Pclonic_missed P_clonic_m];
 end
+
+%% Add a normal dose
+if add_norm == 1
+    MISSED = 0;
+    [y_m,t_m,auc_m,~,receptor_m,effect_m,P_tonic_m,P_clonic_m,~ ,~,~,~] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,MISSED);
+    Conc_missed = [Conc_missed y_m];
+    Receptor_missed = [Receptor_missed receptor_m];
+    Effect_missed = [Effect_missed effect_m];
+    Ptonic_missed = [Ptonic_missed P_tonic_m];
+    Pclonic_missed = [Pclonic_missed P_clonic_m];
+end
+
 
 %Print Cmin, Cmax, and AUCs to compare
 % m/5, 2m/5, 3m/5, 4m/5, double dose, skipped dose
