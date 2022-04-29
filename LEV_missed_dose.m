@@ -304,8 +304,66 @@ kCLPPK = CL./21.9;
         ylabel('Number of Patients');
         xlim(limits);
         
-
+%% Save data for R visualization
  
+%Choose key metric to plot
+    KEY_METRIC = 1;
+    % 1 = AUC
+    % 2 = AUEC tonic
+    % 3 = AUEC clonic
+    % 4 = Ctrough
+    % 5 = Etrough tonic
+    % 6 = Etrough clonic
+ 
+    for KEY_METRIC = 1:1
+        
+        if KEY_METRIC == 1 % AUC
+        Diff_m = ((auc(2,:) - auc0)./auc0)';
+        Diff_dd = ((auc(5,:) - auc0)./auc0)';
+        Diff_skip = ((auc(6,:) - auc0)./auc0)';
+        save missed_dose_pop_data/AUC_missed.mat Diff_m
+        save missed_dose_pop_data/AUC_double.mat Diff_dd
+        save missed_dose_pop_data/AUC_skipped.mat Diff_skip
+        
+        elseif KEY_METRIC == 2 % AUEC tonic
+        Diff_m = ((auecT(2,:) - auecTonic0)./auecTonic0)';
+        Diff_dd = ((auecT(5,:) - auecTonic0)./auecTonic0)';
+        Diff_skip = ((auecT(6,:) - auecTonic0)./auecTonic0)';
+        save missed_dose_pop_data/AUEC_tonic_missed.mat Diff_m
+        save missed_dose_pop_data/AUEC_tonic_double.mat Diff_dd
+        save missed_dose_pop_data/AUEC_tonic_skipped.mat Diff_skip
 
+        elseif KEY_METRIC == 3 % AUEC clonic
+        Diff_m = ((auecC(2,:) - auecClonic0)./auecClonic0)';
+        Diff_dd = ((auecC(5,:) - auecClonic0)./auecClonic0)';
+        Diff_skip = ((auecC(6,:) - auecClonic0)./auecClonic0)';
+        save missed_dose_pop_data/AUEC_clonic_missed.mat Diff_m
+        save missed_dose_pop_data/AUEC_clonic_double.mat Diff_dd
+        save missed_dose_pop_data/AUEC_clonic_skipped.mat Diff_skip
 
+        elseif KEY_METRIC == 4 % Ctrough
+        Diff_m = ((ctrough(2,:) - ctrough0)./ctrough0)';
+        Diff_dd = ((ctrough(5,:) - ctrough0)./ctrough0)';
+        Diff_skip = ((ctrough(6,:) - ctrough0)./ctrough0)';
+        save missed_dose_pop_data/Ctrough_missed.mat Diff_m
+        save missed_dose_pop_data/Ctrough_double.mat Diff_dd
+        save missed_dose_pop_data/Ctrough_skipped.mat Diff_skip
 
+        elseif KEY_METRIC == 5
+        Diff_m = ((etroughT(2,:) - Etrough_tonic0)./Etrough_tonic0)';
+        Diff_dd = ((etroughT(5,:) - Etrough_tonic0)./Etrough_tonic0)';
+        Diff_skip = ((etroughT(6,:) - Etrough_tonic0)./Etrough_tonic0)';
+        save missed_dose_pop_data/Etrough_tonic_missed.mat Diff_m
+        save missed_dose_pop_data/Etrough_tonic_double.mat Diff_dd
+        save missed_dose_pop_data/Etrough_tonic_skipped.mat Diff_skip
+
+        elseif KEY_METRIC == 6
+        Diff_m = ((etroughC(2,:) - Etrough_clonic0)./Etrough_clonic0)';
+        Diff_dd = ((etroughC(5,:) - Etrough_clonic0)./Etrough_clonic0)';
+        Diff_skip = ((etroughC(6,:) - Etrough_clonic0)./Etrough_clonic0)';
+        save missed_dose_pop_data/Etrough_clonic_missed.mat Diff_m
+        save missed_dose_pop_data/Etrough_clonic_double.mat Diff_dd
+        save missed_dose_pop_data/Etrough_clonic_skipped.mat Diff_skip
+
+        end
+    end
