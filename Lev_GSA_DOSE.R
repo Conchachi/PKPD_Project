@@ -84,17 +84,17 @@ ETonic <- readMat('EtroughTONIC_GSA.mat')
 ETonic <- as.data.frame(ETonic)
 ETonic <- ETonic[c(1:24)]
 
-kCL = round(kCL,2)
+Dose = round(Dose,2)
 
 # Labels 
 df1 <- cbind(TimeLen, ETonic)
 df1 <- as.data.frame(df1)
-names(df1) <- c('TimeLen', kCL)
+names(df1) <- c('TimeLen', Dose)
 
 # Reformat data so all of the output is in one column
-df1 <- pivot_longer(df1, !TimeLen, names_to = 'kCL', values_to = 'df1')
+df1 <- pivot_longer(df1, !TimeLen, names_to = 'Dose', values_to = 'df1')
 
-ETonic_plot <- ggplot(data = df1, aes(x = as.numeric(kCL), y = TimeLen, fill = df1)) +
+ETonic_plot <- ggplot(data = df1, aes(x = as.numeric(Dose), y = TimeLen, fill = df1)) +
   geom_tile() +
   labs(title = 'B') +
   xlab('Dose (mg)') +
@@ -122,17 +122,17 @@ kCL = round(kCL,2)
 EClonic <- readMat('EtroughCLONIC_GSA.mat')
 EClonic <- as.data.frame(EClonic)
 
-kCL = round(kCL,2)
+Dose = round(Dose,2)
 
 # Labels 
 df3 <- cbind(TimeLen, ETonic)
 df3 <- as.data.frame(df3)
-names(df3) <- c('TimeLen', kCL)
+names(df3) <- c('TimeLen', Dose)
 
 # Reformat data so all of the output is in one column
-df3 <- pivot_longer(df3, !TimeLen, names_to = 'kCL', values_to = 'df3')
+df3 <- pivot_longer(df3, !TimeLen, names_to = 'Dose', values_to = 'df3')
 
-EClonic_plot <- ggplot(data = df3, aes(x = as.numeric(kCL), y = TimeLen, fill = df3)) +
+EClonic_plot <- ggplot(data = df3, aes(x = as.numeric(Dose), y = TimeLen, fill = df3)) +
   geom_tile() +
   labs(title = 'C') +
   xlab('Dose (mg)') +
