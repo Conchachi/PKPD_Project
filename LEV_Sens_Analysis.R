@@ -94,4 +94,3 @@ Trough_plot<-ggplot(data = Trough, aes(x=Parameter, y=Sensitivity, colour = Lege
 Trough_plot
 ggsave(filename = 'LocalSens_Trough_plot.png', plot = Trough_plot, width = 8, height = 6)
 
-
