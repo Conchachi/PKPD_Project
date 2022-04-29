@@ -147,8 +147,7 @@ R = (100.*Y1(:,1))./(IC50+Y1(:,1)); %Percent receptors occupied based on IC50
 E = (100.*Y1(:,1))./(Kd+Y1(:,1)); %Percent receptors occupied based on Kd
 P_tonic = alpha2.*E+beta2; %Protection from tonic seizures based on receptor occupancy
 P_clonic = alpha1.*E+beta1; %Protection from clonic seizures based on receptor occupancy
-%P_tonicR = alpha1.*R+beta1;
-%P_clonicR = alpha2.*R+beta2;
+
 
 %% Updating negative values and normalizing
 ind = P_tonic<0;
@@ -159,15 +158,6 @@ ind2 = P_clonic<0;
 P_clonic(ind2) = 0;
 P_clonic = P_clonic./(1.2922);
 
-%{
-ind = P_tonicR<0;
-P_tonicR(ind) = 0;
-P_tonicR = P_tonicR./(1.2922);
-
-ind2 = P_clonicR<0;
-P_clonicR(ind2) = 0;
-P_clonicR = P_clonicR./(1.5294);
-%}
 
 %% MASS BALANCE
 InitialDrug = Dose;
@@ -183,29 +173,23 @@ end
 
 %% calculate AUEC by integrating the protection against tonic seizures curve (trapezoidal rule)
 AUEC_tonic = 0;
-%AUEC_tonicR = 0;
 for i=1:(length(P_tonic)-1)
     AUEC_tonic = AUEC_tonic + 0.5*(P_tonic(i,1)+P_tonic(i+1,1))*(T1(i+1)-T1(i));
-    %AUEC_tonicR = AUEC_tonicR + 0.5*(P_tonicR(i,1)+P_tonicR(i+1,1))*(T1(i+1)-T1(i));
 end
 
 %Calculate Ctrough
 E_tonic_trough = P_tonic(length(P_tonic), 1);
-%E_tonic_troughR = P_tonicR(length(P_tonicR), 1);
 
 
 %% calculate AUEC by integrating the protection against clonic seizures curve (trapezoidal rule)
 AUEC_clonic = 0;
-%AUEC_clonicR = 0;
+
 for i=1:(length(P_tonic)-1)
     AUEC_clonic = AUEC_clonic + 0.5*(P_clonic(i,1)+P_clonic(i+1,1))*(T1(i+1)-T1(i));
-    %AUEC_clonicR = AUEC_clonicR + 0.5*(P_clonicR(i,1)+P_clonicR(i+1,1))*(T1(i+1)-T1(i));
-
 end
 
 %Calculate Ctrough
 E_clonic_trough = P_clonic(length(P_clonic), 1);
-%E_clonic_troughR = P_clonicR(length(P_clonicR), 1);
 
 
 %% calculate AUC by integrating the concentration curve (trapezoidal rule)
@@ -248,5 +232,15 @@ plot(ax4,T1,BalanceD1,'linewidth',3)
 title(ax4,'Mass/molecular balance for the drug')
 ylabel(ax4,'Balance of drug (mg)')
 xlabel(ax4,'Time (hrs)')
+
+if DOSEFREQ == 0
+    Mass_bal_single = [Time, BalanceD1];
+    save MassBal_Single.mat Mass_bal_single;
+
+elseif DOSEFREQ == 1
+    Mass_bal_rep = [Time', BalanceD1];
+    save MassBal_Rep.mat Mass_bal_rep;
+end
+
 end
 
