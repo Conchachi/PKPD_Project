@@ -59,8 +59,9 @@ ylabel('% Protection', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
 
 %Import into R to plot
-%save single_dose_data/SingleDoseConc.mat Conc;
-%save single_dose_data/SingleDoseTime.mat Time;
+single_dose_conc = Conc(:,1);
+save single_dose_data/SingleDoseConc.mat Conc;
+save single_dose_data/SingleDoseTime.mat Time;
 %{
 save Conc SingleDoseConc.mat;
 save Time SingleDoseTime.mat;
@@ -194,6 +195,7 @@ end
 %  {
 % Save data for repeated dosing for range of drug doses to import into R
 %Columns correspond to drug doses: 100, 200, 300, 400, 500, and 600 mg
+time = Time(:,1);
 save repeated_dose_data/DoseRangeConc.mat Conc;
 save repeated_dose_data/DoseRangeTime.mat Time;
 save repeated_dose_data/DoseRangeAUC.mat AUC;
