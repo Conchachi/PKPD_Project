@@ -10,14 +10,6 @@ library('rsconnect') # not needed for this assignment
 
 # ==============================================================================
 # plot theme
-#vis_theme <- theme_classic() +
-#  theme(
-#   text = element_text(size = 20),
-#    axis.text = element_text(size = 30),
-#    legend.text = element_text(size = 25),
-#    plot.title = element_text(hjust = 0.5),
-#    axis.title = element_text(size = 30)
-#  )
 
 vis_theme <- theme_classic() +
   theme(
@@ -34,11 +26,15 @@ vis_theme <- theme_classic() +
   )
 
 # ==============================================================================
-# [LEV] for Single dose, 1000 mg (comparison to the paper figure)
+# [LEV] for Single dose, 400 mg (comparison to the paper figure)
 
 # load data
-sddata <- readMat('single_dose.mat')
+sddata <- readMat('single_dose_data/SingleDoseConc.mat')
+sdtime <- readMat('single_dose_data/SingleDoseTime.mat')
 sddata <- as.data.frame(sddata)
+sdtime <- as.data.frame(sdtime)
+
+sddata <- cbind(sdtime, sddata)
 
 # manipulate data
 names(sddata) <- c('Time', 'Concentration')
@@ -52,7 +48,7 @@ sdplot <- ggplot(data = NULL) +
   ) +
   scale_x_continuous(name = 'Time (hr)') +
   scale_y_continuous(name = '[D] (mg/L)') +
-  labs(title = 'A    Single dose (400 mg)') +
+  labs(title = 'A') +
   vis_theme +
   theme(
     legend.position = 'none'
@@ -61,15 +57,19 @@ sdplot <- ggplot(data = NULL) +
 ggsave(filename = 'single_dose_plot.png', plot = sdplot, width = 12, height = 8)
 
 # ==============================================================================
-# [LEV] for Repeated dose, varying dose (250 - 1500 mg)
+# [LEV] for Repeated dose, varying dose (100 - 600 mg)
 # load data
-rddata <- readMat('repeated_dose.mat')
+rddata <- readMat('repeated_dose_data/DoseRangeConc.mat')
+rdtime <- readMat('repeated_dose_data/DoseRangeTime.mat')
 rddata <- as.data.frame(rddata)
+rdtime <- as.data.frame(rdtime)
+
+rddata <- cbind(rdtime, rddata)
 
 # data manipulation
-names(rddata) <- c('Time', '250', '500', '750', '1000', '1250', '1500')
+names(rddata) <- c('Time', '100', '200', '300', '400', '500', '600')
 rddata <- pivot_longer(rddata, !Time, names_to = 'Dose', values_to = 'Concentration')
-rddata$Dose <- factor(rddata$Dose, levels = c('250', '500', '750', '1000', '1250', '1500'))
+rddata$Dose <- factor(rddata$Dose, levels = c('100', '200', '300', '400', '500', '600'))
 
 # plot
 rdplot <- ggplot(data = NULL) +
@@ -78,24 +78,26 @@ rdplot <- ggplot(data = NULL) +
     aes(x = Time, y = Concentration, color = Dose),
     size = 1.5
   ) +
-  scale_x_continuous(name = 'Time (hr)') +
+  scale_x_continuous(name = 'Time (hr)', limits = c(0, 130), breaks = seq(0, 130, by = 25)) +
   scale_y_continuous(name = '[D] (mg/L)') +
   scale_color_discrete('Dose (mg)') +
-  labs(title = 'B    Repeated dose (250 - 1500 mg)') +
+  labs(title = 'B') +
   vis_theme
 
 ggsave(filename = 'repeated_dose_plot.png', plot = rdplot, width = 12, height = 8)
 
 # ==============================================================================
-# R/Rmax for Repeated dose, varying dose (250 - 1500 mg)
+# R/Rmax for Repeated dose, varying dose (100 - 600 mg)
 # load data
-erdata <- readMat('effect_r.mat')
+erdata <- readMat('repeated_dose_data/DoseRangeReceptor.mat')
 erdata <- as.data.frame(erdata)
 
+erdata <- cbind(rdtime, erdata)
+
 # data manipulation
-names(erdata) <- c('Time', '250', '500', '750', '1000', '1250', '1500')
+names(erdata) <- c('Time', '100', '200', '300', '400', '500', '600')
 erdata <- pivot_longer(erdata, !Time, names_to = 'Dose', values_to = 'Concentration')
-erdata$Dose <- factor(erdata$Dose, levels = c('250', '500', '750', '1000', '1250', '1500'))
+erdata$Dose <- factor(erdata$Dose, levels = c('100', '200', '300', '400', '500', '600'))
 
 # plot
 erplot <- ggplot(data = NULL) +
@@ -104,8 +106,8 @@ erplot <- ggplot(data = NULL) +
     aes(x = Time, y = Concentration, color = Dose),
     size = 1.5
   ) +
-  scale_x_continuous(name = 'Time (hr)') +
-  scale_y_continuous(name = 'SV2A occupancy with R/Rmax (%)') +
+  scale_x_continuous(name = 'Time (hr)', limits = c(0, 130), breaks = seq(0, 130, by = 25)) +
+  scale_y_continuous(name = 'SV2A occupancy with R/Rmax (%)', limits = c(0, 100)) +
   scale_color_discrete('Dose (mg)') +
   labs(title = 'A') +
   vis_theme
@@ -113,15 +115,17 @@ erplot <- ggplot(data = NULL) +
 ggsave(filename = 'effect_r_plot.png', plot = erplot, width = 12, height = 8)
 
 # ==============================================================================
-# E/Emax for Repeated dose, varying dose (250 - 1500 mg)
+# E/Emax for Repeated dose, varying dose (100 - 600 mg)
 # load data
-eedata <- readMat('effect_e.mat')
+eedata <- readMat('repeated_dose_data/DoseRangeEffect.mat')
 eedata <- as.data.frame(eedata)
 
+eedata <- cbind(rdtime, eedata)
+
 # data manipulation
-names(eedata) <- c('Time', '250', '500', '750', '1000', '1250', '1500')
+names(eedata) <- c('Time', '100', '200', '300', '400', '500', '600')
 eedata <- pivot_longer(eedata, !Time, names_to = 'Dose', values_to = 'Concentration')
-eedata$Dose <- factor(eedata$Dose, levels = c('250', '500', '750', '1000', '1250', '1500'))
+eedata$Dose <- factor(eedata$Dose, levels = c('100', '200', '300', '400', '500', '600'))
 
 # plot
 eeplot <- ggplot(data = NULL) +
@@ -130,8 +134,8 @@ eeplot <- ggplot(data = NULL) +
     aes(x = Time, y = Concentration, color = Dose),
     size = 1.5
   ) +
-  scale_x_continuous(name = 'Time (hr)') +
-  scale_y_continuous(name = 'SV2A occupancy with E/Emax (%)') +
+  scale_x_continuous(name = 'Time (hr)', limits = c(0, 130), breaks = seq(0, 130, by = 25)) +
+  scale_y_continuous(name = 'SV2A occupancy with E/Emax (%)', limits = c(0, 100)) +
   scale_color_discrete('Dose (mg)') +
   labs(title = 'B') +
   vis_theme
@@ -139,15 +143,17 @@ eeplot <- ggplot(data = NULL) +
 ggsave(filename = 'effect_e_plot.png', plot = eeplot, width = 12, height = 8)
 
 # ==============================================================================
-# Protection against tonic seizures for Repeated dose, varying dose (250 - 1500 mg)
+# Protection against tonic seizures for Repeated dose, varying dose (100 - 600 mg)
 # load data
-eptdata <- readMat('effect_ptonic.mat')
+eptdata <- readMat('repeated_dose_data/DoseRangeP_tonic.mat')
 eptdata <- as.data.frame(eptdata)
 
+eptdata <- cbind(rdtime, eptdata)
+
 # data manipulation
-names(eptdata) <- c('Time', '250', '500', '750', '1000', '1250', '1500')
+names(eptdata) <- c('Time', '100', '200', '300', '400', '500', '600')
 eptdata <- pivot_longer(eptdata, !Time, names_to = 'Dose', values_to = 'Concentration')
-eptdata$Dose <- factor(eptdata$Dose, levels = c('250', '500', '750', '1000', '1250', '1500'))
+eptdata$Dose <- factor(eptdata$Dose, levels = c('100', '200', '300', '400', '500', '600'))
 
 # plot
 eptplot <- ggplot(data = NULL) +
@@ -156,8 +162,8 @@ eptplot <- ggplot(data = NULL) +
     aes(x = Time, y = Concentration, color = Dose),
     size = 1.5
   ) +
-  scale_x_continuous(name = 'Time (hr)') +
-  scale_y_continuous(name = 'Protection against tonic seizures (%)') +
+  scale_x_continuous(name = 'Time (hr)', limits = c(0, 130), breaks = seq(0, 130, by = 25)) +
+  scale_y_continuous(name = 'Protection against tonic seizures (%)', limits = c(0, 100)) +
   scale_color_discrete('Dose (mg)') +
   labs(title = 'C') +
   vis_theme
@@ -165,15 +171,17 @@ eptplot <- ggplot(data = NULL) +
 ggsave(filename = 'effect_ptonic_plot.png', plot = eptplot, width = 12, height = 8)
 
 # ==============================================================================
-# Protection against clonic seizures for Repeated dose, varying dose (250 - 1500 mg)
+# Protection against clonic seizures for Repeated dose, varying dose (100 - 600 mg)
 # load data
-epcdata <- readMat('effect_ptonic.mat')
+epcdata <- readMat('repeated_dose_data/DoseRangeP_clonic.mat')
 epcdata <- as.data.frame(epcdata)
 
+epcdata <- cbind(rdtime, epcdata)
+
 # data manipulation
-names(epcdata) <- c('Time', '250', '500', '750', '1000', '1250', '1500')
+names(epcdata) <- c('Time', '100', '200', '300', '400', '500', '600')
 epcdata <- pivot_longer(epcdata, !Time, names_to = 'Dose', values_to = 'Concentration')
-epcdata$Dose <- factor(epcdata$Dose, levels = c('250', '500', '750', '1000', '1250', '1500'))
+epcdata$Dose <- factor(epcdata$Dose, levels = c('100', '200', '300', '400', '500', '600'))
 
 # plot
 epcplot <- ggplot(data = NULL) +
@@ -182,8 +190,8 @@ epcplot <- ggplot(data = NULL) +
     aes(x = Time, y = Concentration, color = Dose),
     size = 1.5
   ) +
-  scale_x_continuous(name = 'Time (hr)') +
-  scale_y_continuous(name = 'Protection against clonic seizures (%)') +
+  scale_x_continuous(name = 'Time (hr)', limits = c(0, 130), breaks = seq(0, 130, by = 25)) +
+  scale_y_continuous(name = 'Protection against clonic seizures (%)', limits = c(0, 100)) +
   scale_color_discrete('Dose (mg)') +
   labs(title = 'D') +
   vis_theme
