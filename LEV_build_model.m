@@ -68,13 +68,14 @@ save P_tonic SingleDoseP_tonic.mat;
 save P_clonic SingleDoseP_clonic.mat;
 %}
 
+Time = Time';
 
-save Conc RepeatedDoseConc.mat;
-save Time RepeatedDoseTime.mat;
-save Receptor RepeatedDoseReceptor.mat;
-save Effect RepeatedDoseEffect.mat;
-save P_tonic RepeatedDoseP_tonic.mat;
-save P_clonic RepeatedDoseP_clonic.mat;
+save missed_dose_data/RepeatedDoseConc.mat Conc;
+save missed_dose_data/RepeatedDoseTime.mat Time;
+save missed_dose_data/RepeatedDoseReceptor.mat Receptor;
+save missed_dose_data/RepeatedDoseEffect.mat Effect;
+save missed_dose_data/RepeatedDoseP_tonic.mat P_tonic;
+save missed_dose_data/RepeatedDoseP_clonic.mat P_clonic;
 %Print AUC and Ctrough/AUEC and Etrough for range of drug doses
 AUC
 Ctrough
