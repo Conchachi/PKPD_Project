@@ -20,7 +20,7 @@ E_clonic_trough <- as.data.frame(readMat('missed_dose_data/MissedDoseE_clonic_tr
 
 # Helper function for pivoting
 pivot_helper <- function(df, val_name) {
-  col_names <- c('2.4', '4.8', '7.2', '9.6', '12', 'Skipped')
+  col_names <- c('2.4', '4.8', '7.2', '9.6', '12 (Double Dose)', 'Skipped', 'Normal')
   col_names <- append(col_names, 't')
   names(df) <- col_names
   return(pivot_longer(df, 
@@ -46,12 +46,16 @@ Pclonic_missed_pivot <- pivot_helper(Pclonic_missed, 'Pclonic')
 df_missed <- cbind(Conc_missed_pivot, Ptonic_missed_pivot['Ptonic'])
 df_missed <- cbind(df_missed, Pclonic_missed_pivot['Pclonic'])
 
+# Reorder
+df_missed$Missed <- factor(df_missed$Missed, levels = 
+                             c('2.4', '4.8', '7.2', '9.6', '12 (Double Dose)', 'Skipped', 'Normal'))
+
 # ==============================================================================
 # PLOTTING
 # Create a theme
 my_theme <- theme_classic() +
-  theme(text = element_text(size = 20),
-        plot.title = element_text(hjust = 0.5),
+  theme(text = element_text(size = 12),
+        plot.title = element_text(hjust = 0.0),
         axis.title.x = element_text(margin = margin(10,0,0,0)),
         axis.title.y = element_text(margin = margin(0,10,0,0)),
         axis.text.x = element_text(margin = margin(5,0,0,0)),
@@ -60,38 +64,38 @@ LINE_THICKNESS = 1
 
 # Plot 1: concentration vs time
 conc <- ggplot(data = df_missed,
-                    aes(
-                      x = t, 
-                      y = Conc, 
-                      color = Missed
-                      )
-                    ) +
+               aes(
+                 x = t, 
+                 y = Conc, 
+                 color = Missed
+               )
+) +
   geom_line(size = LINE_THICKNESS) +
   labs(
     title = 'Levetiracetam Concentration Over Time',
     x = 'Time (h)',
     y = '[D] (mg/L)'
-    ) +
-  scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+  ) +
+  scale_color_brewer(name = 'Delayed Dose (h)', palette = 'Accent') +
   my_theme 
 conc
 ggsave('plots/missed_dose_conc_time.pdf', width=8, height=5)
 
 # Plot 2: tonic seizure protection % vs time
 tonic <- ggplot(data = df_missed,
-                     aes(
-                       x = t, 
-                       y = Ptonic, 
-                       color = Missed
-                     )
+                aes(
+                  x = t, 
+                  y = Ptonic, 
+                  color = Missed
+                )
 ) +
   geom_line(size = LINE_THICKNESS) +
   labs(
-    title = 'Tonic Seziure Protection Over Time',
+    title = 'Tonic Seizure Protection Over Time',
     x = 'Time (h)',
-    y = 'Protection From Seziures (%)'
+    y = 'Tonic Seizure Protection (%)'
   ) +
-  scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+  scale_color_brewer(name = 'Delayed Dose (h)', palette = 'Accent') +
   ylim(0, 100) +
   my_theme 
 tonic
@@ -107,12 +111,27 @@ clonic <- ggplot(data = df_missed,
 ) +
   geom_line(size = LINE_THICKNESS) +
   labs(
-    title = 'Clonic Seziure Protection Over Time',
+    title = 'Clonic Seizure Protection Over Time',
     x = 'Time (h)',
-    y = 'Protection From Seziures (%)'
+    y = 'Clonic Seizure Protection (%)'
   ) +
-  scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+  scale_color_brewer(name = 'Delayed Dose (h)', palette = 'Accent') +
   ylim(0, 100) +
   my_theme 
 clonic
 ggsave('plots/missed_dose_clonic_time.pdf', width=8, height=5)
+
+# Plot 4: Refine
+conc_mod <- conc +
+  labs(title = 'A') +
+  theme(legend.position="none")
+tonic_mod <- tonic +
+  labs(title = 'B') +
+  theme(legend.position="none")
+clonic_mod <- clonic +
+  labs(title = 'C')+
+  theme(legend.position="right") +
+  scale_color_brewer(name = 'Delay (h)', palette = 'Accent')
+
+combo <- ((conc_mod | tonic_mod) | clonic_mod) 
+ggsave('plots/combined.png', width=12, height=4)
