@@ -17,7 +17,7 @@ MISSED = 0; %for missed dose analysis, not relevant here
 Dose = 400; %mg
 TimeLen = 12; %hours between doses
 MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
-DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+DOSEFREQ = 0; %Set to 0 for single dose, 1 for repeated dosing
 
 %Run simulation for single dose and print concentrations, amounts, and mass balance
 [Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
@@ -59,6 +59,8 @@ ylabel('% Protection', 'FontSize', 12);
 xlabel('Time (hrs)', 'FontSize', 12);
 
 %Import into R to plot
+%save single_dose_data/SingleDoseConc.mat Conc;
+%save single_dose_data/SingleDoseTime.mat Time;
 %{
 save Conc SingleDoseConc.mat;
 save Time SingleDoseTime.mat;
@@ -69,12 +71,56 @@ save P_clonic SingleDoseP_clonic.mat;
 %}
 
 
-save Conc RepeatedDoseConc.mat;
-save Time RepeatedDoseTime.mat;
-save Receptor RepeatedDoseReceptor.mat;
-save Effect RepeatedDoseEffect.mat;
-save P_tonic RepeatedDoseP_tonic.mat;
-save P_clonic RepeatedDoseP_clonic.mat;
+%Plot
+% Plot single dose to compare to paper figure
+figure;
+plot(Time, Conc(:,1), 'linewidth', 3);
+title('Concentration of Levetiracetam in Compartment: Repeated Dosing', 'FontSize', 16);
+ylabel('[D] (mg/L)', 'FontSize', 12);
+xlabel('Time (hrs)', 'FontSize', 12);
+
+%% STEP 2:
+% Identify and simulate key time-dependent variables for a range of doses
+
+% Repeated doses, every 12 hours
+
+%Pediatric population data
+q = 0;     % units: nmol/hr
+V = 21.9; % units: L (volume of distribution)
+kA  =  3.83; % units: 1/hr (absorption rate constant)
+kCL = 0.113; %units: 1/hr (clearance rate constant)
+IC50 = 2.43; %mg/L
+Kd = 1.3617; % units: mg/L
+MISSED = 0; %for missed dose analysis, not relevant here
+
+%% SIMULATIONS
+
+% Simulate range of doses for key PK/PD variables: 
+% Concentration in central compartment
+% Receptor occupancy (2 models)
+% Protection from tonic seizures
+% Protection from clonic seizures
+
+% Initialize matrices to store outputs
+Conc = [];
+Time = [];
+Receptor = [];
+Effect = [];
+P_tonic = [];
+P_clonic = [];
+
+%Simulate range of drug doses 110-550mg
+for i=1:6
+    Dose = 100*i;
+    [Conc1, Time1, AUC(i), Ctrough(i), Receptor1, Effect1, P_tonic1, P_clonic1, AUEC_tonic(i) ,E_tonic_trough(i) ,AUEC_clonic(i) ,E_clonic_trough(i)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,0);
+    Conc = [Conc Conc1];
+    Time = [Time Time1'];
+    Receptor = [Receptor Receptor1];
+    Effect = [Effect Effect1];
+    P_tonic = [P_tonic P_tonic1];
+    P_clonic = [P_clonic P_clonic1];
+end
+
 %Print AUC and Ctrough/AUEC and Etrough for range of drug doses
 AUC
 Ctrough
@@ -145,21 +191,21 @@ end
     leg = legend('100', '200', '300', '400', '500', '600');
     title(leg, 'Dose (mg)');
 
-  %{
-%% Save data for repeated dosing for range of drug doses to import into R
-% Columns correspond to drug doses: 250, 500, 750, 1000, 1250, and 1500 mg
-save DoseRangeConc.mat Conc;
-save DoseRangeTime.mat Time;
-save DoseRangeAUC.mat AUC;
-save DoseRangeCtrough.mat Ctrough;
-save DoseRangeReceptor.mat Receptor;
-save DoseRangeEffect.mat Effect;
-save DoseRangeP_tonic.mat P_tonic;
-save DoseRangeP_clonic.mat P_clonic;
-save DoseRangeAUEC_tonic.mat AUEC_tonic;
-save DoseRangeAUEC_clonic.mat AUEC_clonic;
-save DoseRangeE_tonic_trough.mat E_tonic_trough;
-save DoseRangeE_clonic_trough.mat E_clonic_trough;
+%  {
+% Save data for repeated dosing for range of drug doses to import into R
+%Columns correspond to drug doses: 100, 200, 300, 400, 500, and 600 mg
+save repeated_dose_data/DoseRangeConc.mat Conc;
+save repeated_dose_data/DoseRangeTime.mat Time;
+save repeated_dose_data/DoseRangeAUC.mat AUC;
+save repeated_dose_data/DoseRangeCtrough.mat Ctrough;
+save repeated_dose_data/DoseRangeReceptor.mat Receptor;
+save repeated_dose_data/DoseRangeEffect.mat Effect;
+save repeated_dose_data/DoseRangeP_tonic.mat P_tonic;
+save repeated_dose_data/DoseRangeP_clonic.mat P_clonic;
+save repeated_dose_data/DoseRangeAUEC_tonic.mat AUEC_tonic;
+save repeated_dose_data/DoseRangeAUEC_clonic.mat AUEC_clonic;
+save repeated_dose_data/DoseRangeE_tonic_trough.mat E_tonic_trough;
+save repeated_dose_data/DoseRangeE_clonic_trough.mat E_clonic_trough;
 
 %}
 
