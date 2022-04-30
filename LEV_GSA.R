@@ -42,6 +42,7 @@ names(TimeLen) <- c('TimeLen')
 
 Ctrough <- readMat('Ctrough_GSA.mat')
 Ctrough <- as.data.frame(Ctrough)
+Ctrough <- Ctrough[c(1:24)]
 
 kCL = round(kCL,2)
 
@@ -75,6 +76,7 @@ plot(Ctrough_plot)
 
 ETonic <- readMat('EtroughTONIC_GSA.mat')
 ETonic <- as.data.frame(ETonic)
+ETonic <- ETonic[c(1:24)]
 
 kCL = round(kCL,2)
 
@@ -90,11 +92,11 @@ ETonic_plot <- ggplot(data = df1, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   geom_tile() +
   labs(title = 'B') +
   xlab('kCL (hr-1)') +
-  ylab('Hours between Doses (h)') +
+  ylab('Time between Doses (h)') +
   labs(fill='Tonic Etrough (%):') +
   scale_fill_viridis(discrete = FALSE) +
-  theme1 +
-  theme(axis.text.x = element_text(size = 14, angle = 0, vjust = 1.5))
+  theme1 
+
 ggsave(filename = 'global_Etrough_Tonic.png', plot = ETonic_plot, width = 12,
        height = 8)
 
@@ -112,6 +114,7 @@ kCL = round(kCL,2)
 
 EClonic <- readMat('EtroughCLONIC_GSA.mat')
 EClonic <- as.data.frame(EClonic)
+EClonic <- EClonic[c(1:24)]
 
 kCL = round(kCL,2)
 
@@ -127,11 +130,11 @@ EClonic_plot <- ggplot(data = df3, aes(x = as.numeric(kCL), y = TimeLen, fill = 
   geom_tile() +
   labs(title = 'C') +
   xlab('kCL (hr-1)') +
-  ylab('Hours between Doses (h)') +
+  ylab('Time between Doses (h)') +
   labs(fill='Clonic Etrough (%):') +
   theme1 +
-  scale_fill_viridis(discrete = FALSE) +
-  theme(axis.text.x = element_text(size = 14, angle = 0, vjust = 1.5))
+  scale_fill_viridis(discrete = FALSE) 
+  
 ggsave(filename = 'global_Etrough_Clonic.png', plot = EClonic_plot, width = 12,
        height = 8)
 
