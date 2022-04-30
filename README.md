@@ -14,7 +14,7 @@
 - LEV_missed_dose_vis.R generates figures 9, 10, and 11.
 - Levetiracetam_sim_missed_dose_consecutive.m is the function called to run missed dose simulation for consecutive missed doses. 
 - LEV_missed_dose_consecutive.m runs the consecutive missed dose analysis and generates the data for the Shiny app (figure 12).
-- PKPD_Project_Levetiracetam_APP (contains app.R and data folder in order to run)
+- PKPD_Project_Levetiracetam_APP (Shiny app; contains app.R and data folder in order to run)
 
 To generate the desired data, run the code in this order:
 1. Levetiracetam_build_model.m
