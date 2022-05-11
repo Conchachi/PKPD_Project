@@ -1,4 +1,6 @@
 function [Conc,Time,AUC,Ctrough, R, E, P_tonic, P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA, V, kCL, Dose, TimeLen, q, IC50, Kd, MASS_BAL_VIS, DOSEFREQ, MISSED);
+%This function runs the simulation and outputs the concentrations, times,
+%effects, and all key metrics (AUC, Ctrough, AUEC, Etrough)
 
 %% PARAMETERS
 p.q = 0;     % units: nmol/hr
@@ -29,7 +31,7 @@ Time = T1;
 DrugIn = 0;
 end
 
-%% Repeated dosing (also double dosing and skipped dose)
+%% Repeated dosing, double dosing, or skipped dose
 % MISSED = 5 --> double dosing
 % MISSED = 6 --> skipped dose
 
@@ -46,7 +48,7 @@ Y1 = [Y1; Ystep];
 y0 = Ystep(length(Ystep),:); % Initial Conditions; units: nM
 y0(3) = y0(3) + Dose;
 
-%Calculating DrugIn depending on time step 
+%Calculate DrugIn depending on time step 
 DrugAdded = ones(length(Ystep),1)*(i-1)*Dose;
 
 %5th dose taken normally but next dose is skipped
@@ -72,19 +74,19 @@ if i > 5 && MISSED == 6
     DrugAdded = ones(length(Ystep),1)*(i-2)*Dose;
 end
 
-%Amount of drug going into system
+%Update amount of drug going into system
 DrugIn = [DrugIn; DrugAdded];
 
 end
 
 T1 = [0:TimeLen/240:TimeLen*10-TimeLen/240]; %Total time
 CurrentD1 = Y1(:,1)*p.V + Y1(:,3); % Total drug amount in system
-Conc = Y1(:,1);
-Time = T1;
+Conc = Y1(:,1); %Concentration in central compartment
+Time = T1; %Time
 
 end
 
-%%  Repeated dosing--delayed dose
+%%  Repeated dosing: delayed dose
 % MISSED = 1 --> taken m/5 h late
 % MISSED = 2 --> taken 2m/5 h late
 % MISSED = 3 --> taken 3m/5 h late
@@ -136,8 +138,8 @@ end
 
 T1 = [0:TimeLen/240:TimeLen*10-TimeLen/240]; %Total time
 CurrentD1 = Y1(:,1)*p.V + Y1(:,3); % Total drug amount in system
-Conc = Y1(:,1);  
-Time = T1;
+Conc = Y1(:,1);  %Concentration in central compartment
+Time = T1; %Time
 
 end
 
@@ -149,7 +151,7 @@ P_tonic = alpha2.*E+beta2; %Protection from tonic seizures based on receptor occ
 P_clonic = alpha1.*E+beta1; %Protection from clonic seizures based on receptor occupancy
 
 
-%% Updating negative values and normalizing
+%% Updating negative values and normalize to 100% receptor occupancy
 ind = P_tonic<0;
 P_tonic(ind) = 0;
 P_tonic = P_tonic./(1.5294);
@@ -171,33 +173,34 @@ if mean(BalanceD1)>1e-6
     disp(BalanceD1);
 end
 
-%% calculate AUEC by integrating the protection against tonic seizures curve (trapezoidal rule)
+%% Calculate AUEC by integrating the protection against tonic seizures curve (trapezoidal rule)
 AUEC_tonic = 0;
 for i=1:(length(P_tonic)-1)
     AUEC_tonic = AUEC_tonic + 0.5*(P_tonic(i,1)+P_tonic(i+1,1))*(T1(i+1)-T1(i));
 end
 
-%Calculate Ctrough
+%Calculate Etrough for tonic seizures
 E_tonic_trough = P_tonic(length(P_tonic), 1);
 
 
-%% calculate AUEC by integrating the protection against clonic seizures curve (trapezoidal rule)
+%% Calculate AUEC by integrating the protection against clonic seizures curve (trapezoidal rule)
 AUEC_clonic = 0;
 
 for i=1:(length(P_tonic)-1)
     AUEC_clonic = AUEC_clonic + 0.5*(P_clonic(i,1)+P_clonic(i+1,1))*(T1(i+1)-T1(i));
 end
 
-%Calculate Ctrough
+%Calculate Etrough for clonic seizures
 E_clonic_trough = P_clonic(length(P_clonic), 1);
 
 
-%% calculate AUC by integrating the concentration curve (trapezoidal rule)
+%% Calculate AUC by integrating the concentration curve (trapezoidal rule)
 AUC = 0;
 for i=1:(length(Y1)-1)
     AUC = AUC + 0.5*(Y1(i,1)+Y1(i+1,1))*(T1(i+1)-T1(i));
 end
 
+%Calculate Ctrough for central compartment concentration
 Ctrough = Y1(length(Y1), 1);
 
 
@@ -233,13 +236,15 @@ title(ax4,'Mass/molecular balance for the drug')
 ylabel(ax4,'Balance of drug (mg)')
 xlabel(ax4,'Time (hrs)')
 
+%save data to plot mass balance in R
 if DOSEFREQ == 0
     Mass_bal_single = [Time, BalanceD1];
-    save MassBal_Single.mat Mass_bal_single;
+    save build_model_data/MassBal_Single.mat Mass_bal_single;
 
+%save data to plot mass balance in R
 elseif DOSEFREQ == 1
     Mass_bal_rep = [Time', BalanceD1];
-    save MassBal_Rep.mat Mass_bal_rep;
+    save build_model_data/MassBal_Rep.mat Mass_bal_rep;
 end
 
 end
