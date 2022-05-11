@@ -34,7 +34,6 @@ Ptonic_missed = [];
 Pclonic_missed = [];
 
 %Missed doses
- 
 
 for MISSED = 1:6
 [y_m,t_m,auc_m(MISSED),ctrough_m(MISSED),receptor_m,effect_m,P_tonic_m,P_clonic_m,AUEC_tonic(MISSED) ,E_tonic_trough(MISSED) ,AUEC_clonic(MISSED) ,E_clonic_trough(MISSED)] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,MISSED);
@@ -49,72 +48,6 @@ Tonic_min(MISSED) = min(ptonic_trough, [], 'all');
 Tonic_max(MISSED) = max(P_tonic_m, [], 'all');
 Clonic_min(MISSED) = min(pclonic_trough, [], 'all');
 Clonic_max(MISSED) = max(P_clonic_m, [], 'all');
-
-%% Plotting (commented out because plotting in R)
-%{
-% Plot concentrations
-figure;
-hold on;
-yyaxis left;
-ylim([0 40]);
-ylabel('[D] (mg/L)', 'FontSize', 12);
-plot(t_m, y_m);
-
-if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late');
-    if MISSED == 5
-        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
-    end
-else 
-    PLOT_title = 'Skipped Dose';
-end
-
-title(PLOT_title, 'FontSize', 16);
-xlabel('Time (hrs)', 'FontSize', 12);
-
-yyaxis right;
-ylim([0 100]);
-ylabel('Protection From Seizures (%)', 'FontSize', 12);
-plot(t_m, P_tonic_m);
-plot(t_m, P_clonic_m, 'r', 'linewidth', 2);
-legend('Plasma Concentration', 'Tonic Seizure Protection', 'Clonic Seizure Protection', 'Location', 'northwest');
-hold off;
-%}
-
-%{
-%% If want to plot each individually
-%Plot tonic seizure protection
-figure;
-plot(t_m, P_tonic_m, 'linewidth', 3);
-if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Tonic Seizure Protection)');
-    if MISSED == 5
-        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
-    end
-else 
-    PLOT_title = 'Skipped Dose (Tonic Seizure Protection)';
-end
-
-title(PLOT_title, 'FontSize', 16);
-ylabel('Protection From Tonic Seizures (%)', 'FontSize', 12);
-xlabel('Time (hrs)', 'FontSize', 12);
-
-%Plot clonic seizure protection
-figure;
-plot(t_m, P_clonic_m, 'linewidth', 3);
-if MISSED ~= 6 
-PLOT_title = strcat('Missed Dose Taken', {' '}, string(MISSED*12/5), ' Hours Late (Clonic Seizure Protection)');
-    if MISSED == 5
-        PLOT_title = strcat('Double Dose:', {' '}, PLOT_title);
-    end
-else 
-    PLOT_title = 'Skipped Dose (Clonic Seizure Protection)';
-end
-
-title(PLOT_title, 'FontSize', 16);
-ylabel('Protection From Clonic Seizures (%)', 'FontSize', 12);
-xlabel('Time (hrs)', 'FontSize', 12);
-%}
 
 
 %% Save concentration and effect data for each missed dose case
@@ -135,19 +68,6 @@ if add_norm == 1
     Ptonic_missed = [Ptonic_missed P_tonic_m];
     Pclonic_missed = [Pclonic_missed P_clonic_m];
 end
-
-
-%Print Cmin, Cmax, and AUCs to compare
-% m/5, 2m/5, 3m/5, 4m/5, double dose, skipped dose
-Cmin
-Cmax
-auc_m
-Tonic_min
-Tonic_max
-AUEC_tonic
-Clonic_min
-Clonic_max
-AUEC_clonic
 
 
 %% Save data for missed dosing to import into R
@@ -291,31 +211,6 @@ kCLPPK = CL./21.9;
 
         end
         
-%% Plot Histograms
-
-        %Missed dose taken 2m/5 (4.8 h) late
-        figure;
-        histogram(Diff_m);
-        title({Plot_title, 'Missed Dose Taken 4.8 h Late'}); 
-        xlabel(xlab);
-        ylabel('Number of Patients');
-        xlim(limits);
-        
-        %Double dose
-        figure;
-        histogram(Diff_dd);
-        title({Plot_title, 'Double Dose'}); 
-        xlabel(xlab);
-        ylabel('Number of Patients');
-        xlim(limits);
-
-        %Skipped dose
-        figure;
-        histogram(Diff_skip);
-        title({Plot_title, 'Skipped Dose'}); 
-        xlabel(xlab);
-        ylabel('Number of Patients');
-        xlim(limits);
         
 %% Save data for R visualization
  
@@ -328,7 +223,7 @@ kCLPPK = CL./21.9;
     % 5 = Etrough tonic
     % 6 = Etrough clonic
  
-    for KEY_METRIC = 1:1
+    for KEY_METRIC = 1:6
         
         if KEY_METRIC == 1 % AUC
         Diff_m = ((auc(2,:) - auc0)./auc0)';

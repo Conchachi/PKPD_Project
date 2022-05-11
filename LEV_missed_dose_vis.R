@@ -79,7 +79,7 @@ conc <- ggplot(data = df_missed,
   scale_color_brewer(name = 'Delayed Dose (h)', palette = 'Accent') +
   my_theme 
 conc
-ggsave('plots/missed_dose_conc_time.pdf', width=8, height=5)
+ggsave('missed_dose_data/missed_dose_conc_time.pdf', width=8, height=5)
 
 # Plot 2: tonic seizure protection % vs time
 tonic <- ggplot(data = df_missed,
@@ -99,7 +99,7 @@ tonic <- ggplot(data = df_missed,
   ylim(0, 100) +
   my_theme 
 tonic
-ggsave('plots/missed_dose_tonic_time.pdf', width=8, height=5)
+ggsave('missed_dose_data/missed_dose_tonic_time.pdf', width=8, height=5)
 
 # Plot 3: clonic seizure protection % vs time
 clonic <- ggplot(data = df_missed,
@@ -119,7 +119,7 @@ clonic <- ggplot(data = df_missed,
   ylim(0, 100) +
   my_theme 
 clonic
-ggsave('plots/missed_dose_clonic_time.pdf', width=8, height=5)
+ggsave('missed_dose_data/missed_dose_clonic_time.pdf', width=8, height=5)
 
 # Plot 4: Refine
 conc_mod <- conc +
@@ -134,4 +134,4 @@ clonic_mod <- clonic +
   scale_color_brewer(name = 'Delay (h)', palette = 'Accent')
 
 combo <- ((conc_mod | tonic_mod) | clonic_mod) 
-ggsave('plots/combined.png', width=12, height=4)
+ggsave('missed_dose_data/combined.png', width=12, height=4)
