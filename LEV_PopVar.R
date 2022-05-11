@@ -28,10 +28,10 @@ theme1 <- theme_classic() +
         plot.title.position = "plot")
 
 # Load kA Data 
-ka_data <- readMat('kA_PopVar_params.mat')
+ka_data <- readMat('pop_var_data/kA_PopVar_params.mat')
 ka_data <- as.data.frame(ka_data)
 
-ka_values <- readMat('kA_PopVar.mat')
+ka_values <- readMat('pop_var_data/kA_PopVar.mat')
 ka_values <- as.data.frame(ka_values)
 
 names(ka_data) <- c('AUC','Ctrough', 'AUECTonic', 'EtroughTonic', 'AUECClonic', 'EtroughClonic')
@@ -41,10 +41,10 @@ ka_data <- bind_cols(ka_data, ka_values)
 
 
 # Load kCL Data
-kcl_data <- readMat('kCL_PopVar_params.mat')
+kcl_data <- readMat('pop_var_data/kCL_PopVar_params.mat')
 kcl_data <- as.data.frame(kcl_data)
 
-kcl_values <- readMat('kCL_PopVar.mat')
+kcl_values <- readMat('pop_var_data/kCL_PopVar.mat')
 kcl_values <- as.data.frame(kcl_values)
 
 names(kcl_data) <- c('AUC','Ctrough', 'AUECTonic', 'EtroughTonic', 'AUECClonic', 'EtroughClonic')
@@ -53,7 +53,7 @@ names(kcl_values) <- c('kCL')
 kcl_data <- bind_cols(kcl_data, kcl_values)
 
 # Load kA and kCL (Varying Both) Data 
-both_data <- readMat('kCL_kA_PopVar_params.mat')
+both_data <- readMat('pop_var_data/kCL_kA_PopVar_params.mat')
 both_data <- as.data.frame(both_data)
 
 names(both_data) <- c('AUC','Ctrough', 'AUECTonic', 'EtroughTonic', 'AUECClonic', 'EtroughClonic')
@@ -68,7 +68,7 @@ ka_AUC_Plot <- ggplot(data = NULL) +
        x = 'kA (1/hr)', y = 'AUC (mg*h/L)') +
   theme1
 plot(ka_AUC_Plot)
-ggsave(filename = 'ka_AUC.png', plot = ka_AUC_Plot, width = 5, height = 3.5)
+ggsave(filename = 'ka_AUC.png', plot = ka_AUC_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
 
 
 ka_AUEC_Plot <- ggplot(data = NULL) +
@@ -79,7 +79,7 @@ ka_AUEC_Plot <- ggplot(data = NULL) +
   theme1 + 
   theme(legend.position  = 'bottom')
 plot(ka_AUEC_Plot)
-ggsave(filename = 'ka_AUEC.png', plot = ka_AUEC_Plot, width = 5, height = 4)
+ggsave(filename = 'ka_AUEC.png', plot = ka_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 4)
 
 
 ka_Ctrough_Plot <- ggplot(data = NULL) +
@@ -89,7 +89,7 @@ ka_Ctrough_Plot <- ggplot(data = NULL) +
   theme1 + 
   theme(legend.position="none")
 plot(ka_Ctrough_Plot)
-ggsave(filename = 'ka_Ctrough.png', plot = ka_Ctrough_Plot, width = 5, height = 3.5)
+ggsave(filename = 'ka_Ctrough.png', plot = ka_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
 
 
 ka_Etrough_Plot <- ggplot(data = NULL) +
@@ -100,7 +100,7 @@ ka_Etrough_Plot <- ggplot(data = NULL) +
   theme1 + 
   theme(legend.position  = 'bottom') 
 plot(ka_Etrough_Plot)
-ggsave(filename = 'ka_Etrough.png', plot = ka_Etrough_Plot, width = 5, height = 4)
+ggsave(filename = 'ka_Etrough.png', plot = ka_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 4)
 
 
 ################################################################################
@@ -112,7 +112,7 @@ kcl_AUC_Plot <- ggplot(data = NULL) +
        x = 'kCL (1/hr)', y = 'AUC (mg*h/L)') +
   theme1
 plot(kcl_AUC_Plot)
-ggsave(filename = 'kcl_AUC.png', plot = kcl_AUC_Plot, width = 5, height = 3.5)
+ggsave(filename = 'kcl_AUC.png', plot = kcl_AUC_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
 
 
 kcl_AUEC_Plot <- ggplot(data = NULL) +
@@ -123,7 +123,7 @@ kcl_AUEC_Plot <- ggplot(data = NULL) +
   theme1 + 
   theme(legend.position  = "bottom")
 plot(kcl_AUEC_Plot)
-ggsave(filename = 'kcl_AUEC.png', plot = kcl_AUEC_Plot, width = 5, height = 4)
+ggsave(filename = 'kcl_AUEC.png', plot = kcl_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 4)
 
 
 kcl_Ctrough_Plot <- ggplot(data = NULL) +
@@ -132,7 +132,7 @@ kcl_Ctrough_Plot <- ggplot(data = NULL) +
        x = 'kCL (1/hr)', y = 'Ctrough (mg/L)') +
   theme1
 plot(kcl_Ctrough_Plot)
-ggsave(filename = 'kcl_Ctrough.png', plot = kcl_Ctrough_Plot, width = 5, height = 3.5)
+ggsave(filename = 'kcl_Ctrough.png', plot = kcl_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
 
 
 kcl_Etrough_Plot <- ggplot(data = NULL) +
@@ -143,7 +143,7 @@ kcl_Etrough_Plot <- ggplot(data = NULL) +
   theme1 + 
   theme(legend.position  = 'bottom')
 plot(kcl_Etrough_Plot)
-ggsave(filename = 'kcl_Etrough.png', plot = kcl_Etrough_Plot, width = 5, height = 4)
+ggsave(filename = 'kcl_Etrough.png', plot = kcl_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 4)
 ################################################################################
 
 # Varying both kA and kCL
@@ -168,7 +168,7 @@ AUC3D <- ggplot(both_data, aes(kA, kCL, color=AUC)) +
   ylab('kCL (hr-1)') +
   labs(color = 'AUC') +
   theme1 
-ggsave(filename = '3DAUC.png', plot = AUC3D, width = 5, height = 4)
+ggsave(filename = '3DAUC.png', plot = AUC3D, path = 'pop_var_data/', width = 5, height = 4)
 #plot(AUC3D)
 
 
@@ -180,7 +180,7 @@ ClonicAUEC3D <- ggplot(both_data, aes(kA, kCL, color=AUECClonic)) +
   ylab('kCL (hr-1)') +
   labs(color = 'Clonic\nAUEC') +
   theme1 
-ggsave(filename = '3DClonicAUEC.png', plot = ClonicAUEC3D, width = 5, height = 4)
+ggsave(filename = '3DClonicAUEC.png', plot = ClonicAUEC3D, path = 'pop_var_data/', width = 5, height = 4)
 #plot(ClonicAUEC3D)
 
 
@@ -192,7 +192,7 @@ TonicAUEC3D <- ggplot(both_data, aes(kA, kCL, color=AUECTonic)) +
   ylab('kCL (hr-1)') +
   labs(color = 'Tonic\nAUEC') +
   theme1 
-ggsave(filename = '3DTonicAUEC.png', plot = TonicAUEC3D, width = 5, height = 4)
+ggsave(filename = '3DTonicAUEC.png', plot = TonicAUEC3D, path = 'pop_var_data/', width = 5, height = 4)
 #plot(TonicAUEC3D)
 
 
@@ -204,7 +204,7 @@ Ctrough3D <- ggplot(both_data, aes(kA, kCL, color=Ctrough)) +
   ylab('kCL (hr-1)') + 
   labs(color = 'C\ntrough') +
   theme1 
-ggsave(filename = '3DCtrough.png', plot = Ctrough3D, width = 5, height = 4)
+ggsave(filename = '3DCtrough.png', plot = Ctrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(Ctrough3D)
 
 
@@ -216,7 +216,7 @@ ClonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughClonic)) +
   ylab('kCL (hr-1)') +
   labs(color = 'Clonic\nEtrough') +
   theme1 
-ggsave(filename = '3DClonicEtrough.png', plot = ClonicEtrough3D, width = 5, height = 4)
+ggsave(filename = '3DClonicEtrough.png', plot = ClonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(ClonicEtrough3D)
 
 
@@ -228,11 +228,8 @@ TonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughTonic)) +
   ylab('kCL (hr-1)') +
   labs(color = 'Tonic\nEtrough') +
   theme1 
-ggsave(filename = '3DTonicEtrough.png', plot = TonicEtrough3D, width = 5, height = 4)
+ggsave(filename = '3DTonicEtrough.png', plot = TonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(TonicEtrough3D)
-
-
-
 
 
 
@@ -241,7 +238,7 @@ library(patchwork)
 
 new_plot <- (AUC3D | ClonicAUEC3D ) / (TonicAUEC3D | Ctrough3D)
 
-ggsave(filename = 'newplot.png', plot = new_plot, width = 12, height = 8)
+ggsave(filename = 'newplot.png', plot = new_plot, path = 'pop_var_data/', width = 12, height = 8)
 
 
 
