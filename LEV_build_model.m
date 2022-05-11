@@ -23,11 +23,11 @@ DOSEFREQ = 0; %Set to 0 for single dose, 1 for repeated dosing
 [Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
 
 %Import into R to plot
-single_dose_conc = Conc(:,1);
-save build_model_data/SingleDoseComparisonConc.mat Conc;
-save build_model_data/SingleDoseComparisonTime.mat Time;
+single_dose_conc = [Conc(:,1), Time];
+save build_model_data/SingleDoseComparisonConc.mat single_dose_conc;
+%save build_model_data/SingleDoseComparisonTime.mat Time;
 
-%% Single dose, 400 mg (Figure 5A)
+%% Single dose, 400 mg (Figure 5A and Figure 3 mass balance for single dose)
 Dose = 400; %mg
 TimeLen = 12; %hours between doses
 MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
@@ -38,8 +38,17 @@ DOSEFREQ = 0; %Set to 0 for single dose, 1 for repeated dosing
 
 %Import into R to plot
 single_dose_conc = Conc(:,1);
-save build_model_data/SingleDoseConc.mat Conc;
+save build_model_data/SingleDoseConc.mat single_dose_conc;
 save build_model_data/SingleDoseTime.mat Time;
+
+%% Repeated dose, 400 mg (Figure 3 to generate mass balance output for repeated dosing)
+Dose = 400; %mg
+TimeLen = 12; %hours between doses
+MASS_BAL_VIS = 1; %Set to 1 to visualize mass balance
+DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
+
+%Run simulation for single dose and print concentrations, amounts, and mass balance
+[Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
 
 
 %% STEP 2:
@@ -84,7 +93,6 @@ for i=1:6
     P_clonic = [P_clonic P_clonic1];
 end
 
-
 % Save data for repeated dosing for range of drug doses to import into R
 %Columns correspond to drug doses: 100, 200, 300, 400, 500, and 600 mg
 time = Time(:,1);
@@ -100,6 +108,4 @@ save build_model_data/DoseRangeAUEC_tonic.mat AUEC_tonic;
 save build_model_data/DoseRangeAUEC_clonic.mat AUEC_clonic;
 save build_model_data/DoseRangeE_tonic_trough.mat E_tonic_trough;
 save build_model_data/DoseRangeE_clonic_trough.mat E_clonic_trough;
-
-
 

@@ -5,13 +5,11 @@ library('plotly')
 library('shiny')
 library('rsconnect')
 
-#Question 7 Data Visualization
-
 #Read in data and convert to data frames
-MassBal_Single <- readMat('MassBal_Single.mat')
+MassBal_Single <- readMat('build_model_data/MassBal_Single.mat')
 MassBal_Single <- as.data.frame(MassBal_Single)
 
-MassBal_Rep <- readMat('MassBal_Rep.mat')
+MassBal_Rep <- readMat('build_model_data/MassBal_Rep.mat')
 MassBal_Rep <- as.data.frame(MassBal_Rep)
 
 col_names <- c('Time', 'Mass_Bal')
@@ -21,7 +19,6 @@ names(MassBal_Rep) <- col_names
 #Create theme for ggplot
 theme1 <- theme_classic() +
   theme(text = element_text(size = 28),
-        #plot.title = element_text(hjust = 0.5),
         axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
         axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
         axis.text.x = element_text(margin = margin(5, 0, 0, 0)),
@@ -49,6 +46,7 @@ MassBal_Rep_Plot <- ggplot(data = NULL) +
 print(MassBal_Single_Plot)
 print(MassBal_Rep_Plot)
 
-ggsave(filename = 'MassBal_Single_Plot.png', plot = MassBal_Single_Plot, width = 8.5, height = 6)
-ggsave(filename = 'MassBal_Rep_Plot.png', plot = MassBal_Rep_Plot, width = 9, height = 6)
+ggsave(filename = 'MassBal_Single_Plot.png', plot = MassBal_Single_Plot, path = 'build_model_data/', width = 8.5, height = 6)
+ggsave(filename = 'MassBal_Rep_Plot.png', plot = MassBal_Rep_Plot, path = 'build_model_data/', width = 9, height = 6)
+
 

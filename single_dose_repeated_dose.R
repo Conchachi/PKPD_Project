@@ -29,8 +29,8 @@ vis_theme <- theme_classic() +
 # [LEV] for Single dose, 400 mg (comparison to the paper figure)
 
 # load data
-sddata <- readMat('single_dose_data/SingleDoseConc.mat')
-sdtime <- readMat('single_dose_data/SingleDoseTime.mat')
+sddata <- readMat('build_model_data/SingleDoseConc.mat')
+sdtime <- readMat('build_model_data/SingleDoseTime.mat')
 sddata <- as.data.frame(sddata)
 sdtime <- as.data.frame(sdtime)
 
@@ -54,15 +54,17 @@ sdplot <- ggplot(data = NULL) +
     legend.position = 'none'
   )
 
-ggsave(filename = 'single_dose_plot.png', plot = sdplot, width = 12, height = 8)
+ggsave(filename = 'single_dose_plot.png', plot = sdplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # [LEV] for Repeated dose, varying dose (100 - 600 mg)
 # load data
-rddata <- readMat('repeated_dose_data/DoseRangeConc.mat')
-rdtime <- readMat('repeated_dose_data/DoseRangeTime.mat')
+rddata <- readMat('build_model_data/DoseRangeConc.mat')
+rdtime <- readMat('build_model_data/DoseRangeTime.mat')
 rddata <- as.data.frame(rddata)
 rdtime <- as.data.frame(rdtime)
+names(rdtime) <- c('1', '2', '3', '4', '5', '6')
+rdtime = subset(rdtime, select = -c(1,2,3,4,5))
 
 rddata <- cbind(rdtime, rddata)
 
@@ -84,12 +86,12 @@ rdplot <- ggplot(data = NULL) +
   labs(title = 'B') +
   vis_theme
 
-ggsave(filename = 'repeated_dose_plot.png', plot = rdplot, width = 12, height = 8)
+ggsave(filename = 'repeated_dose_plot.png', plot = rdplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # R/Rmax for Repeated dose, varying dose (100 - 600 mg)
 # load data
-erdata <- readMat('repeated_dose_data/DoseRangeReceptor.mat')
+erdata <- readMat('build_model_data/DoseRangeReceptor.mat')
 erdata <- as.data.frame(erdata)
 
 erdata <- cbind(rdtime, erdata)
@@ -112,12 +114,12 @@ erplot <- ggplot(data = NULL) +
   labs(title = 'A') +
   vis_theme
 
-ggsave(filename = 'effect_r_plot.png', plot = erplot, width = 12, height = 8)
+ggsave(filename = 'effect_r_plot.png', plot = erplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # E/Emax for Repeated dose, varying dose (100 - 600 mg)
 # load data
-eedata <- readMat('repeated_dose_data/DoseRangeEffect.mat')
+eedata <- readMat('build_model_data/DoseRangeEffect.mat')
 eedata <- as.data.frame(eedata)
 
 eedata <- cbind(rdtime, eedata)
@@ -140,12 +142,12 @@ eeplot <- ggplot(data = NULL) +
   labs(title = 'B') +
   vis_theme
 
-ggsave(filename = 'effect_e_plot.png', plot = eeplot, width = 12, height = 8)
+ggsave(filename = 'effect_e_plot.png', plot = eeplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # Protection against tonic seizures for Repeated dose, varying dose (100 - 600 mg)
 # load data
-eptdata <- readMat('repeated_dose_data/DoseRangeP_tonic.mat')
+eptdata <- readMat('build_model_data/DoseRangeP_tonic.mat')
 eptdata <- as.data.frame(eptdata)
 
 eptdata <- cbind(rdtime, eptdata)
@@ -168,12 +170,12 @@ eptplot <- ggplot(data = NULL) +
   labs(title = 'C') +
   vis_theme
 
-ggsave(filename = 'effect_ptonic_plot.png', plot = eptplot, width = 12, height = 8)
+ggsave(filename = 'effect_ptonic_plot.png', plot = eptplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # Protection against clonic seizures for Repeated dose, varying dose (100 - 600 mg)
 # load data
-epcdata <- readMat('repeated_dose_data/DoseRangeP_clonic.mat')
+epcdata <- readMat('build_model_data/DoseRangeP_clonic.mat')
 epcdata <- as.data.frame(epcdata)
 
 epcdata <- cbind(rdtime, epcdata)
@@ -196,16 +198,16 @@ epcplot <- ggplot(data = NULL) +
   labs(title = 'D') +
   vis_theme
 
-ggsave(filename = 'effect_pclonic_plot.png', plot = epcplot, width = 12, height = 8)
+ggsave(filename = 'effect_pclonic_plot.png', plot = epcplot, path = 'build_model_data/', width = 12, height = 8)
 
 # ==============================================================================
 # Figure 1 ([LEV] for single dose and repeated dose)
 figure1 <- sdplot | rdplot
-ggsave(filename = 'figure1.png', plot = figure1, width = 24, height = 8)
+ggsave(filename = 'figure1.png', plot = figure1, path = 'build_model_data/', width = 24, height = 8)
 
 # ==============================================================================
 # Figure 2 (effect for repeated dose)
 figure2 <- (erplot | eeplot) / (eptplot | epcplot) +
   plot_layout(guides = 'collect')
 
-ggsave(filename = 'figure2.png', plot = figure2, width = 24, height = 16)
+ggsave(filename = 'figure2.png', plot = figure2, path = 'build_model_data/', width = 24, height = 16)
