@@ -11,33 +11,26 @@ library("shiny")
 # set theme for all plots
 theme1 <- theme_classic(base_size = 20) +
   theme(text = element_text(),
-        # plot.title = element_text(hjust = 0),
-        # axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
-        # axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
-        # axis.text.x = element_text(margin = margin(5, 0, 0, 0)),
-        # axis.text.y = element_text(margin = margin(0, 5, 0, 0)),
         panel.grid.major.y = element_line(colour = "grey", size = 0.2),
         panel.grid.minor.y = element_line(colour = "grey", size = 0.2),
         plot.title.position = "plot")
         
-
-
-SensAUC <- readMat('SensAUC.mat')
+SensAUC <- readMat('sens_analysis_data/SensAUC.mat')
 SensAUC <- as.data.frame(SensAUC)
 
-SensClonicAUEC <- readMat('SensClonicAUEC.mat')
+SensClonicAUEC <- readMat('sens_analysis_data/SensClonicAUEC.mat')
 SensClonicAUEC <- as.data.frame(SensClonicAUEC)
 
-SensTonicAUEC <- readMat('SensTonicAUEC.mat')
+SensTonicAUEC <- readMat('sens_analysis_data/SensTonicAUEC.mat')
 SensTonicAUEC <- as.data.frame(SensTonicAUEC)
 
-SensClonicEtrough <- readMat('SensClonicEtrough.mat')
+SensClonicEtrough <- readMat('sens_analysis_data/SensClonicEtrough.mat')
 SensClonicEtrough <- as.data.frame(SensClonicEtrough)
 
-SensTonicEtrough <- readMat('SensTonicEtrough.mat')
+SensTonicEtrough <- readMat('sens_analysis_data/SensTonicEtrough.mat')
 SensTonicEtrough <- as.data.frame(SensTonicEtrough)
 
-SensCtrough<- readMat('SensCtrough.mat')
+SensCtrough<- readMat('sens_analysis_data/SensCtrough.mat')
 SensCtrough <- as.data.frame(SensCtrough)
 
 
@@ -84,7 +77,7 @@ AUC_plot<-ggplot(data = AUC, aes(x=Parameter, y=Sensitivity, colour = Legend, fi
   ylim(-1.8,1.8)  + 
   theme1
 AUC_plot
-ggsave(filename = 'LocalSens_AUC_plot.png', plot = AUC_plot, width = 8, height = 6)
+ggsave(filename = 'LocalSens_AUC_plot.png', plot = AUC_plot, path = 'sens_analysis_data/', width = 8, height = 6)
 
 Trough_plot<-ggplot(data = Trough, aes(x=Parameter, y=Sensitivity, colour = Legend, fill=Legend)) +
   geom_bar(stat="identity", position=position_dodge()) + 
@@ -92,5 +85,5 @@ Trough_plot<-ggplot(data = Trough, aes(x=Parameter, y=Sensitivity, colour = Lege
   ylim(-1.8,1.8) +
   theme1
 Trough_plot
-ggsave(filename = 'LocalSens_Trough_plot.png', plot = Trough_plot, width = 8, height = 6)
+ggsave(filename = 'LocalSens_Trough_plot.png', plot = Trough_plot, path = 'sens_analysis_data/', width = 8, height = 6)
 

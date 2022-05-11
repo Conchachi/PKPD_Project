@@ -13,34 +13,26 @@ library("viridis")
 # set theme for all plots
 theme1 <- theme_classic(base_size = 30) +
   theme(text = element_text(),
-         plot.title = element_text(hjust = 0.075),
-        #  axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
-        #  axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
-         axis.text.x = element_text(size = 30),
-         axis.text.y = element_text(size = 26),
-        #  axis.text.y = element_text(margin = margin(0, 5, 0, 0)),
-        # #panel.grid.major.y = element_line(colour = "grey", size = 0.2),
-        #panel.grid.minor.y = element_line(colour = "grey", size = 0.2),
+        plot.title = element_text(hjust = 0.075),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 26),
         legend.position  = "bottom",
         legend.key.width = unit(2, 'cm'),
         legend.text = element_text(angle=45),
-        
         plot.title.position = "plot")
 
 # Load Data 
-kCL <- readMat('kCL_GSA.mat')
+kCL <- readMat('sens_analysis_data/kCL_GSA.mat')
 kCL <- as.data.frame(kCL)
-# kCL <- t(kCL)
-# kCL <- as.data.frame(kCL)
 names(kCL) <- c('kCL')
 
-TimeLen <- readMat('TimeLen_GSA.mat')
+TimeLen <- readMat('sens_analysis_data/TimeLen_GSA.mat')
 TimeLen <- as.data.frame(TimeLen)
 TimeLen <- t(TimeLen)
 TimeLen <- as.data.frame(TimeLen)
 names(TimeLen) <- c('TimeLen')
 
-Ctrough <- readMat('Ctrough_GSA.mat')
+Ctrough <- readMat('sens_analysis_data/Ctrough_GSA.mat')
 Ctrough <- as.data.frame(Ctrough)
 Ctrough <- Ctrough[c(1:24)]
 
@@ -64,9 +56,9 @@ Ctrough_plot <- ggplot(data = df, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   labs(fill='Ctrough (mg/L):') +
   scale_fill_viridis(discrete = FALSE) +
   theme1
-  #theme(axis.text.x = element_text(size = 14, angle = 0, vjust = 1.5))
-ggsave(filename = 'global_Ctrough.png', plot = Ctrough_plot, width = 12,
-       height = 8)
+
+ggsave(filename = 'global_Ctrough.png', plot = Ctrough_plot, path = 'sens_analysis_data/',
+       width = 12, height = 8)
 
 plot(Ctrough_plot)
 
@@ -74,7 +66,7 @@ plot(Ctrough_plot)
 # Repeat for E_trough Tonic
 ################################################################################
 
-ETonic <- readMat('EtroughTONIC_GSA.mat')
+ETonic <- readMat('sens_analysis_data/EtroughTONIC_GSA.mat')
 ETonic <- as.data.frame(ETonic)
 ETonic <- ETonic[c(1:24)]
 
@@ -97,8 +89,8 @@ ETonic_plot <- ggplot(data = df1, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   scale_fill_viridis(discrete = FALSE) +
   theme1 
 
-ggsave(filename = 'global_Etrough_Tonic.png', plot = ETonic_plot, width = 12,
-       height = 8)
+ggsave(filename = 'global_Etrough_Tonic.png', plot = ETonic_plot, path = 'sens_analysis_data/',
+       width = 12, height = 8)
 
 plot(ETonic_plot)
 
@@ -106,13 +98,13 @@ plot(ETonic_plot)
 # Repeat for E_trough Clonic
 ################################################################################
 
-EClonic <- readMat('EtroughCLONIC_GSA.mat')
+EClonic <- readMat('sens_analysis_data/EtroughCLONIC_GSA.mat')
 EClonic <- as.data.frame(EClonic)
 
 kCL = round(kCL,2)
 
 
-EClonic <- readMat('EtroughCLONIC_GSA.mat')
+EClonic <- readMat('sens_analysis_data/EtroughCLONIC_GSA.mat')
 EClonic <- as.data.frame(EClonic)
 EClonic <- EClonic[c(1:24)]
 
@@ -134,11 +126,8 @@ EClonic_plot <- ggplot(data = df3, aes(x = as.numeric(kCL), y = TimeLen, fill = 
   labs(fill='Clonic Etrough (%):') +
   theme1 +
   scale_fill_viridis(discrete = FALSE) 
-  
-ggsave(filename = 'global_Etrough_Clonic.png', plot = EClonic_plot, width = 12,
-       height = 8)
+
+ggsave(filename = 'global_Etrough_Clonic.png', plot = EClonic_plot, path = 'sens_analysis_data/', 
+       width = 12, height = 8)
 
 plot(EClonic_plot)
-
-
-
