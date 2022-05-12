@@ -346,19 +346,19 @@ ui <-
                 )
               ),
               br(),
-              column(12, plotlyOutput(outputId = "concrplot")),
+              column(12, plotlyOutput(outputId = "concrplot", width = '100%')),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(12, plotlyOutput(outputId = 'clonicrplot')),
+              column(12, plotlyOutput(outputId = 'clonicrplot', width = '100%')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(12, plotlyOutput(outputId = 'tonicrplot')),
+              column(12, plotlyOutput(outputId = 'tonicrplot', width = '100%')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
@@ -374,19 +374,19 @@ ui <-
                 )
               ),
               br(),
-              column(12, plotlyOutput(outputId = "concplot")),
+              column(12, plotlyOutput(outputId = "concplot", width = '100%')),
               br(),
               h4(
                 'Figure 1: Plot modeling Levetiracetam Concentration over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(12, plotlyOutput(outputId = 'clonicplot')),
+              column(12, plotlyOutput(outputId = 'clonicplot', width = '100%')),
               br(),
               h4(
                 'Figure 2: Plot modeling Clonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
               ),
               br(),
-              column(12, plotlyOutput(outputId = 'tonicplot')),
+              column(12, plotlyOutput(outputId = 'tonicplot', width = '100%')),
               br(),
               h4(
                 'Figure 3: Plot modeling Tonic Seizure Protection over Time, Comparing Regular Dosing (Black) to Missed Dose (Green). Parameters are set as a regular 400 mg dose being taken every 12 hours.'
