@@ -145,13 +145,13 @@ ggsave(filename = 'kcl_Etrough.png', plot = kcl_Etrough_Plot, path = 'pop_var_da
 
 
 # set theme for all plots
-theme1 <- theme_classic(base_size = 12) +
-  theme(text = element_text(size = 12),
+theme1 <- theme_classic(base_size = 13) +
+  theme(text = element_text(size = 13),
         plot.title = element_text(hjust = 0),
         axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
         axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
-        axis.text.x = element_text(size = 12),
-        axis.text.y = element_text(size = 12),
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
         legend.key.height = unit(1.5, 'cm'),
         plot.title.position = "plot")
 
@@ -197,7 +197,7 @@ Ctrough3D <- ggplot(both_data, aes(kA, kCL, color=Ctrough)) +
   labs(title = 'D    Minimum Central Compartment Concentration') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') + 
-  labs(color = '(mg/L)') +
+  labs(color = '(mg/L)      ') +
   theme1 
 ggsave(filename = '3DCtrough.png', plot = Ctrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(Ctrough3D)
@@ -209,7 +209,7 @@ ClonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughClonic)) +
   labs(title = 'E    Minimum Clonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = '(%)') +
+  labs(color = '(%)         ') +
   theme1 
 ggsave(filename = '3DClonicEtrough.png', plot = ClonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(ClonicEtrough3D)
@@ -221,7 +221,7 @@ TonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughTonic)) +
   labs(title = 'F    Minimum Tonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = '(%)') +
+  labs(color = '(%)          ') +
   theme1 
 ggsave(filename = '3DTonicEtrough.png', plot = TonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(TonicEtrough3D)
