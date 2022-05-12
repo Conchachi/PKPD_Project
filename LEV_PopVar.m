@@ -1,3 +1,6 @@
+clear all;
+close all;
+
 %% STEP 3:
 %Population variability--varying ka and kcl in children
 
@@ -43,8 +46,8 @@ CL = CLtemp; % This is the final clearance rate distribution
 kCLPPK = CL./21.9;
 
 %Save data to import into R
-save kCL_PopVar.mat kCLPPK;
-save kA_PopVar.mat kaPPK;
+save pop_var_data/kCL_PopVar.mat kCLPPK;
+save pop_var_data/kA_PopVar.mat kaPPK;
 
 %% Run Simulations
 
@@ -67,52 +70,10 @@ for i=1:200
     [y1, t1, auc(i),ctrough(i),receptor,effect,p_tonic,p_clonic,auecT(i),etroughT(i),auecC(i),etroughC(i)] = Levetiracetam_sim(kaPPK(i),V,kCL,Dose,TimeLen,q,IC50,Kd,0,1,0);
 end
 
-%Plot AUC vs. ka
-figure;
-scatter(kaPPK, auc);
-title('AUC vs. ka in children', 'FontSize', 16);
-ylabel('AUC (mg*h/L)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot Ctrough vs. ka
-figure;
-scatter(kaPPK, ctrough);
-title('Ctrough vs. ka in children', 'FontSize', 16);
-ylabel('Ctrough (mg/L)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot AUEC tonic vs. ka
-figure;
-scatter(kaPPK, auecT);
-title('AUEC (tonic) vs. ka in children', 'FontSize', 16);
-ylabel('AUEC (% * h)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot AUEC clonic vs. ka
-figure;
-scatter(kaPPK, auecC);
-title('AUEC (clonic) vs. ka in children', 'FontSize', 16);
-ylabel('AUEC (% * h)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot Etrough tonic vs. ka
-figure;
-scatter(kaPPK, etroughT);
-title('Etrough (tonic) vs. ka in children', 'FontSize', 16);
-ylabel('Etrough (%)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot Etrough clonic vs. ka
-figure;
-scatter(kaPPK, etroughC);
-title('Etrough (clonic) vs. ka in children', 'FontSize', 16);
-ylabel('Etrough (%)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
 %Outputs to import into R
 outputs_kA_PopVar = [auc', ctrough', auecT', etroughT', auecC', etroughC'];
 
-save kA_PopVar_params.mat outputs_kA_PopVar;
+save pop_var_data/kA_PopVar_params.mat outputs_kA_PopVar;
 
 
 %% Vary kcl only:
@@ -123,52 +84,10 @@ for i=1:200
     [y1, t1, auc(i),ctrough(i),receptor,effect,p_tonic,p_clonic,auecT(i),etroughT(i),auecC(i),etroughC(i)] = Levetiracetam_sim(kA,V,kCLPPK(i),Dose,TimeLen,q,IC50,Kd,0,1,0);
 end
 
-%Plot AUC vs. kCL
-figure;
-scatter(kCLPPK, auc);
-title('AUC vs. kcl in children', 'FontSize', 16);
-ylabel('AUC (mg*h/L)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
-%Plot Ctrough vs. kCL
-figure;
-scatter(kCLPPK, ctrough);
-title('Ctrough vs. kcl in children', 'FontSize', 16);
-ylabel('Ctrough (mg/L)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
-%Plot AUEC tonic vs. kCL
-figure;
-scatter(kCLPPK, auecT);
-title('AUEC (tonic) vs. kcl in children', 'FontSize', 16);
-ylabel('AUEC (% * h)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
-%Plot AUEC clonic vs. kCL
-figure;
-scatter(kCLPPK, auecC);
-title('AUEC (clonic) vs. kcl in children', 'FontSize', 16);
-ylabel('AUEC (% * h)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
-%Plot Etrough tonic vs. kCL
-figure;
-scatter(kCLPPK, etroughT);
-title('Etrough (tonic) vs. kcl in children', 'FontSize', 16);
-ylabel('Etrough (%)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
-%Plot Etrough clonic vs. kCL
-figure;
-scatter(kCLPPK, etroughC);
-title('Etrough (clonic) vs. kcl in children', 'FontSize', 16);
-ylabel('Etrough (%)', 'FontSize', 12);
-xlabel('kcl (1/hr)', 'FontSize', 12);
-
 %Outputs to import into R
 outputs_kCL_PopVar = [auc', ctrough', auecT', etroughT', auecC', etroughC'];
 
-save kCL_PopVar_params.mat outputs_kCL_PopVar;
+save pop_var_data/kCL_PopVar_params.mat outputs_kCL_PopVar;
 
 %% Vary both ka and kcl:
 
@@ -177,23 +96,7 @@ for i=1:200
     [y1, t1, auc(i),ctrough(i),receptor,effect,p_tonic,p_clonic,auecT(i),etroughT(i),auecC(i),etroughC(i)] = Levetiracetam_sim(kaPPK(i),V,kCLPPK(i),Dose,TimeLen,q,IC50,Kd,0,1,0);
 end
 
-%Plot AUC vs. ka and kcl
-figure;
-scatter3(kaPPK, kCLPPK, auc);
-title('AUC vs. ka and kcl in children', 'FontSize', 16);
-zlabel('AUC (mg*h/L)', 'FontSize', 12);
-ylabel('kcl (1/hr)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
-%Plot Ctrough vs. ka and kcl
-figure;
-scatter3(kaPPK, kCLPPK, ctrough);
-title('Ctrough vs. ka and kcl in children', 'FontSize', 16);
-zlabel('Ctrough (mg/L)', 'FontSize', 12);
-ylabel('kcl (1/hr)', 'FontSize', 12);
-xlabel('ka (1/hr)', 'FontSize', 12);
-
 %Outputs to import into R
 outputs_kCL_kA_PopVar = [auc', ctrough', auecT', etroughT', auecC', etroughC'];
 
-save kCL_kA_PopVar_params.mat outputs_kCL_kA_PopVar;
+save pop_var_data/kCL_kA_PopVar_params.mat outputs_kCL_kA_PopVar;
