@@ -18,7 +18,7 @@ vis_theme <- theme_classic() +
     plot.title.position = 'plot',
     axis.title = element_text(size = 25),
     axis.title.x = element_text(margin = margin(10,0,0,0)),
-    axis.title.y = element_text(margin = margin(0,10,0,0)),
+    axis.title.y = element_text(margin = margin(0,10,0,0), size = 30),
     axis.text = element_text(size = 30),
     axis.text.x = element_text(margin = margin(5,0,0,0)),
     axis.text.y = element_text(margin = margin(0,5,0)),
@@ -104,7 +104,7 @@ AUC_missed_hist <- ggplot(AUC_missed, aes(x = AUC)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUC\n(AUC - AUC0)/AUC0',
+    name = 'Relative change in AUC of\ncentral compartment concentration\n(AUC - AUC0)/AUC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -134,7 +134,7 @@ AUC_double_hist <- ggplot(AUC_double, aes(x = AUC)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUC\n(AUC - AUC0)/AUC0',
+    name = 'Relative change in AUC of\ncentral compartment concentration\n(AUC - AUC0)/AUC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -164,7 +164,7 @@ AUC_skipped_hist <- ggplot(AUC_skipped, aes(x = AUC)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUC\n(AUC - AUC0)/AUC0',
+    name = 'Relative change in AUC of\ncentral compartment concentration\n(AUC - AUC0)/AUC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -195,7 +195,7 @@ AUEC_tonic_missed_hist <- ggplot(AUEC_tonic_missed, aes(x = AUEC_tonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (tonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\ntonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -225,7 +225,7 @@ AUEC_tonic_double_hist <- ggplot(AUEC_tonic_double, aes(x = AUEC_tonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (tonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\ntonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -255,7 +255,7 @@ AUEC_tonic_skipped_hist <- ggplot(AUEC_tonic_skipped, aes(x = AUEC_tonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (tonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\ntonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -286,7 +286,7 @@ AUEC_clonic_missed_hist <- ggplot(AUEC_clonic_missed, aes(x = AUEC_clonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (clonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\nclonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -316,7 +316,7 @@ AUEC_clonic_double_hist <- ggplot(AUEC_clonic_double, aes(x = AUEC_clonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (clonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\nclonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -346,7 +346,7 @@ AUEC_clonic_skipped_hist <- ggplot(AUEC_clonic_skipped, aes(x = AUEC_clonic)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in AUEC (clonic)\n(AUEC - AUEC0)/AUEC0',
+    name = 'Relative change in AUEC of\nclonic seizure protection\n(AUEC - AUEC0)/AUEC0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -379,7 +379,7 @@ Ctrough_missed_hist <- ggplot(Ctrough_missed, aes(x = Ctrough)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Ctrough\n(Ctrough - Ctrough0)/Ctrough0',
+    name = 'Relative change in Ctrough\n(minimum central compartment conc.)\n(Ctrough - Ctrough0)/Ctrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -409,7 +409,7 @@ Ctrough_double_hist <- ggplot(Ctrough_double, aes(x = Ctrough)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Ctrough\n(Ctrough - Ctrough0)/Ctrough0',
+    name = 'Relative change in Ctrough\n(minimum central compartment conc.)\n(Ctrough - Ctrough0)/Ctrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -439,7 +439,7 @@ Ctrough_skipped_hist <- ggplot(Ctrough_skipped, aes(x = Ctrough)) +
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Ctrough\n(Ctrough - Ctrough0)/Ctrough0',
+    name = 'Relative change in Ctrough\n(minimum central compartment conc.)\n(Ctrough - Ctrough0)/Ctrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -470,7 +470,7 @@ Etrough_tonic_missed_hist <- ggplot(Etrough_tonic_missed, aes(x = Etrough_tonic)
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (tonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum tonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -500,7 +500,7 @@ Etrough_tonic_double_hist <- ggplot(Etrough_tonic_double, aes(x = Etrough_tonic)
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (tonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum tonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -530,7 +530,7 @@ Etrough_tonic_skipped_hist <- ggplot(Etrough_tonic_skipped, aes(x = Etrough_toni
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (tonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum tonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -561,7 +561,7 @@ Etrough_clonic_missed_hist <- ggplot(Etrough_clonic_missed, aes(x = Etrough_clon
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (clonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum clonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -591,7 +591,7 @@ Etrough_clonic_double_hist <- ggplot(Etrough_clonic_double, aes(x = Etrough_clon
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (clonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum clonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
@@ -621,7 +621,7 @@ Etrough_clonic_skipped_hist <- ggplot(Etrough_clonic_skipped, aes(x = Etrough_cl
     size = 1
   ) +
   scale_x_continuous(
-    name = 'Relative change in Etrough (clonic)\n(Etrough - Etrough0)/Etrough0',
+    name = 'Relative change in Etrough\n(minimum clonic seizure protection)\n(Etrough - Etrough0)/Etrough0',
     limits = c(-1, 3.5),
     breaks = seq(-1, 3.5, by = 1)
   ) +
