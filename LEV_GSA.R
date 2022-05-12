@@ -53,13 +53,12 @@ Ctrough_plot <- ggplot(data = df, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   labs(title = 'A') +
   xlab('kCL (hr-1)') +
   ylab('Time between Doses (h)') +
-  labs(fill='Ctrough (mg/L):') +
+  labs(fill='Minimum Central\nCompartment\nConcentration (mg/L)') +
   scale_fill_viridis(discrete = FALSE) +
   theme1
 
 ggsave(filename = 'global_Ctrough.png', plot = Ctrough_plot, path = 'sens_analysis_data/',
        width = 12, height = 8)
-
 plot(Ctrough_plot)
 
 
@@ -85,7 +84,7 @@ ETonic_plot <- ggplot(data = df1, aes(x = as.numeric(kCL), y = TimeLen, fill = d
   labs(title = 'B') +
   xlab('kCL (hr-1)') +
   ylab('Time between Doses (h)') +
-  labs(fill='Tonic Etrough (%):') +
+  labs(fill='Minimum\nTonic Seizure\nProtection (%)') +
   scale_fill_viridis(discrete = FALSE) +
   theme1 
 
@@ -123,7 +122,7 @@ EClonic_plot <- ggplot(data = df3, aes(x = as.numeric(kCL), y = TimeLen, fill = 
   labs(title = 'C') +
   xlab('kCL (hr-1)') +
   ylab('Time between Doses (h)') +
-  labs(fill='Clonic Etrough (%):') +
+  labs(fill='Minimum\nClonic Seizure\nProtection (%)') +
   theme1 +
   scale_fill_viridis(discrete = FALSE) 
 
