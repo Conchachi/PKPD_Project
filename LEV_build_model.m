@@ -91,6 +91,27 @@ for i=1:6
     Effect = [Effect Effect1];
     P_tonic = [P_tonic P_tonic1];
     P_clonic = [P_clonic P_clonic1];
+Time = Time';
+
+save missed_dose_data/RepeatedDoseConc.mat Conc;
+save missed_dose_data/RepeatedDoseTime.mat Time;
+save missed_dose_data/RepeatedDoseReceptor.mat Receptor;
+save missed_dose_data/RepeatedDoseEffect.mat Effect;
+save missed_dose_data/RepeatedDoseP_tonic.mat P_tonic;
+save missed_dose_data/RepeatedDoseP_clonic.mat P_clonic;
+%Print AUC and Ctrough/AUEC and Etrough for range of drug doses
+AUC
+Ctrough
+AUEC_tonic
+E_tonic_trough
+AUEC_clonic
+E_clonic_trough
+
+%Plot drug concentrations for range of doses
+figure; 
+for i = 1:6
+    hold on;
+    plot(Time(:,i), Conc(:,i), 'linewidth',3);
 end
 
 % Save data for repeated dosing for range of drug doses to import into R

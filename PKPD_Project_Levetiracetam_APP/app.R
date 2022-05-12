@@ -78,12 +78,10 @@ pivot_helper <- function(df, val_name) {
   col_names <- c('2.4', '4.8', '7.2', '9.6', '12', 'Skipped')
   col_names <- append(col_names, 't')
   names(df) <- col_names
-  return(pivot_longer(
-    df,
-    cols = -'t',
-    names_to = 'Missed',
-    values_to = val_name
-  ))
+  return(pivot_longer(df, 
+                      cols = -'t',
+                      names_to = 'Missed',
+                      values_to=val_name))
   
   
 }
@@ -92,13 +90,9 @@ pivot_helper <- function(df, val_name) {
 Conc_missed <- cbind(Conc_missed, t_m)
 Ptonic_missed <- cbind(Ptonic_missed, t_m)
 Pclonic_missed <- cbind(Pclonic_missed, t_m)
-
-conc_normal <- cbind(conc_normal, t_m)
-colnames(conc_normal) <- c('Conc', 't')
-Pclonic_norm <- cbind(Pclonic_norm, t_m)
-colnames(Pclonic_norm) <- c('Pclonic', 't')
-Ptonic_norm <- cbind(Ptonic_norm, t_m)
-colnames(Ptonic_norm) <- c('Ptonic', 't')
+conc_normal <- cbind(conc_normal, t_norm)
+Pclonic_norm <- cbind(Pclonic_norm, t_norm)
+Ptonic_norm <- cbind(Ptonic_norm, t_norm)
 
 # Do pivots
 Conc_missed_pivot <- pivot_helper(Conc_missed, 'Conc')
@@ -164,7 +158,7 @@ LINE_THICKNESS = 1
 conc <- ggplot(data = NULL) +
   geom_line(size = LINE_THICKNESS) +
   geom_line(data = conc_normal,
-            aes(x = t,
+            aes(x = Time,
                 y = Conc)) +
   labs(title = 'Levetiracetam Concentration Over Time',
        x = 'Time (h)',
@@ -252,7 +246,8 @@ ui <-
                            '2',
                            '3',
                            '4'),
-            selected = '1'
+            selected = '1',
+            multiple = TRUE
           ),
           selectInput(
             'time_dif',
@@ -266,7 +261,8 @@ ui <-
                            '7.2',
                            '9.6',
                            'Skipped'),
-            selected = '2.4'
+            selected = '2.4',
+            multiple = TRUE
           ),
           h4(
             'Missed Dose Analysis is Subject to inter-individual variation
@@ -442,8 +438,8 @@ server <- function(input, output) {
             y = Conc,
             color = Missed)
       ) +
-      geom_line(data = filter(conc_normal, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
+      geom_line(data = filter(conc_normal, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
                     y = Conc)) +
       labs(title = 'Levetiracetam Concentration Over Time',
            x = 'Time (h)',
@@ -468,9 +464,9 @@ server <- function(input, output) {
             y = Pclonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Pclonic_norm, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
-                    y = Pclonic)) +
+      geom_line(data = filter(Pclonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
+                    y = P.clonic)) +
       labs(title = 'Clonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
@@ -494,9 +490,9 @@ server <- function(input, output) {
             y = Ptonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Ptonic_norm, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
-                    y = Ptonic)) +
+      geom_line(data = filter(Ptonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
+                    y = P.tonic)) +
       labs(title = 'Tonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
@@ -519,8 +515,8 @@ server <- function(input, output) {
             y = Conc,
             color = Missed)
       ) +
-      geom_line(data = filter(conc_normal, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
+      geom_line(data = filter(conc_normal, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
                     y = Conc)) +
       labs(title = 'Levetiracetam Concentration Over Time',
            x = 'Time (h)',
@@ -545,9 +541,9 @@ server <- function(input, output) {
             y = Pclonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Pclonic_norm, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
-                    y = Pclonic)) +
+      geom_line(data = filter(Pclonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
+                    y = P.clonic)) +
       labs(title = 'Clonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
@@ -571,9 +567,9 @@ server <- function(input, output) {
             y = Ptonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Ptonic_norm, t >= input$timelen[1], t <= input$timelen[2]),
-                aes(x = t,
-                    y = Ptonic)) +
+      geom_line(data = filter(Ptonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
+                aes(x = Time,
+                    y = P.tonic)) +
       labs(title = 'Tonic Seizure Protection Over Time',
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
