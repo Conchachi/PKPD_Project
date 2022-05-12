@@ -50,6 +50,17 @@ DOSEFREQ = 1; %Set to 0 for single dose, 1 for repeated dosing
 %Run simulation for single dose and print concentrations, amounts, and mass balance
 [Conc,Time,AUC0,Ctrough0,Receptor,Effect,P_tonic,P_clonic,AUEC_tonic,E_tonic_trough,AUEC_clonic,E_clonic_trough] = Levetiracetam_sim(kA,V,kCL,Dose,TimeLen,q,IC50,Kd,MASS_BAL_VIS,DOSEFREQ,MISSED);
 
+Rep_conc = Conc(:,1);
+save build_model_data/RepeatedDoseConc.mat Rep_conc;
+save build_model_data/RepeatedDoseTime.mat Time;
+save build_model_data/RepeatedDoseP_clonic.mat P_clonic;
+save build_model_data/RepeatedDoseP_tonic.mat P_tonic;
+
+%Save to data folder for Shiny App
+save PKPD_Project_Levetiracetam_APP/data/RepeatedDoseConc.mat Rep_conc;
+save PKPD_Project_Levetiracetam_APP/data/RepeatedDoseTime.mat Time;
+save PKPD_Project_Levetiracetam_APP/data/RepeatedDoseP_clonic.mat P_clonic;
+save PKPD_Project_Levetiracetam_APP/data/RepeatedDoseP_tonic.mat P_tonic;
 
 %% STEP 2:
 % Identify and simulate key time-dependent variables for a range of doses
@@ -91,27 +102,6 @@ for i=1:6
     Effect = [Effect Effect1];
     P_tonic = [P_tonic P_tonic1];
     P_clonic = [P_clonic P_clonic1];
-Time = Time';
-
-save missed_dose_data/RepeatedDoseConc.mat Conc;
-save missed_dose_data/RepeatedDoseTime.mat Time;
-save missed_dose_data/RepeatedDoseReceptor.mat Receptor;
-save missed_dose_data/RepeatedDoseEffect.mat Effect;
-save missed_dose_data/RepeatedDoseP_tonic.mat P_tonic;
-save missed_dose_data/RepeatedDoseP_clonic.mat P_clonic;
-%Print AUC and Ctrough/AUEC and Etrough for range of drug doses
-AUC
-Ctrough
-AUEC_tonic
-E_tonic_trough
-AUEC_clonic
-E_clonic_trough
-
-%Plot drug concentrations for range of doses
-figure; 
-for i = 1:6
-    hold on;
-    plot(Time(:,i), Conc(:,i), 'linewidth',3);
 end
 
 % Save data for repeated dosing for range of drug doses to import into R

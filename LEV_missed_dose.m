@@ -75,6 +75,7 @@ end
 % Columns correspond with missed doses taken m/5 (1), 2m/5 (2), 3m/5 (3), 
 % and 4m/5 (4) hours late and double dose (5) and skipped dose (6)
 
+%Save to folder for visualization
 save missed_dose_data/MissedDoseConc.mat Conc_missed;
 t_m = t_m'; % optimize for R visualization
 save missed_dose_data/MissedDoseTime.mat t_m;
@@ -88,6 +89,21 @@ save missed_dose_data/MissedDoseAUEC_tonic.mat AUEC_tonic;
 save missed_dose_data/MissedDoseAUEC_clonic.mat AUEC_clonic;
 save missed_dose_data/MissedDoseE_tonic_trough.mat E_tonic_trough;
 save missed_dose_data/MissedDoseE_clonic_trough.mat E_clonic_trough;
+
+%Also save to folder for Shiny app
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConc.mat Conc_missed;
+t_m = t_m'; % optimize for R visualization
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseTime.mat t_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseAUC.mat auc_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseCtrough.mat ctrough_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseReceptor.mat Receptor_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseEffect.mat Effect_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseP_tonic.mat Ptonic_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseP_clonic.mat Pclonic_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseAUEC_tonic.mat AUEC_tonic;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseAUEC_clonic.mat AUEC_clonic;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseE_tonic_trough.mat E_tonic_trough;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseE_clonic_trough.mat E_clonic_trough;
 
 
 %% Population variability with missed dosing

@@ -53,35 +53,23 @@ Ptonic_missed = [Ptonic_missed P_tonic_m];
 Pclonic_missed = [Pclonic_missed P_clonic_m];
 end
 
-%Print Cmin, Cmax, and AUCs to compare
-% 1 missed dose, 2 missed dose, 3 missed dose, 4 missed dose
-Cmin
-Cmax
-auc_m
-Tonic_min
-Tonic_max
-AUEC_tonic
-Clonic_min
-Clonic_max
-AUEC_clonic
-
 %% Save data for missed dosing to import into R
 
 % Columns correspond with 1 missed dose, 2 missed dose, 3 missed dose, 
 % 4 missed dose
 
-save missed_dose_consecutive_data/MissedDoseConsecutiveConc.mat Conc_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveConc.mat Conc_missed;
 t_m = t_m'; % optimize for R visualization
-save missed_dose_consecutive_data/MissedDoseConsecutiveTime.mat t_m;
-save missed_dose_consecutive_data/MissedDoseConsecutiveAUC.mat auc_m;
-save missed_dose_consecutive_data/MissedDoseConsecutiveCtrough.mat ctrough_m;
-save missed_dose_consecutive_data/MissedDoseConsecutiveReceptor.mat Receptor_missed;
-save missed_dose_consecutive_data/MissedDoseConsecutiveEffect.mat Effect_missed;
-save missed_dose_consecutive_data/MissedDoseConsecutiveP_tonic.mat Ptonic_missed;
-save missed_dose_consecutive_data/MissedDoseConsecutiveP_clonic.mat Pclonic_missed;
-save missed_dose_consecutive_data/MissedDoseConsecutiveAUEC_tonic.mat AUEC_tonic;
-save missed_dose_consecutive_data/MissedDoseConsecutiveAUEC_clonic.mat AUEC_clonic;
-save missed_dose_consecutive_data/MissedDoseConsecutiveE_tonic_trough.mat E_tonic_trough;
-save missed_dose_consecutive_data/MissedDoseConsecutiveE_clonic_trough.mat E_clonic_trough;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveTime.mat t_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveAUC.mat auc_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveCtrough.mat ctrough_m;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveReceptor.mat Receptor_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveEffect.mat Effect_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveP_tonic.mat Ptonic_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveP_clonic.mat Pclonic_missed;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveAUEC_tonic.mat AUEC_tonic;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveAUEC_clonic.mat AUEC_clonic;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveE_tonic_trough.mat E_tonic_trough;
+save PKPD_Project_Levetiracetam_APP/data/MissedDoseConsecutiveE_clonic_trough.mat E_clonic_trough;
 
 
