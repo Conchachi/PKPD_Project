@@ -108,8 +108,6 @@ R = (100.*Y1(:,1))./(IC50+Y1(:,1)); %Percent receptors occupied based on IC50
 E = (100.*Y1(:,1))./(Kd+Y1(:,1)); %Percent receptors occupied based on Kd
 P_tonic = alpha2.*E+beta2; %Protection from tonic seizures based on receptor occupancy
 P_clonic = alpha1.*E+beta1; %Protection from clonic seizures based on receptor occupancy
-%P_tonicR = alpha2.*R+beta2;
-%P_clonicR = alpha1.*R+beta1;
 
 %% Updating negative values and normalizing
 ind = P_tonic<0;
@@ -119,16 +117,6 @@ P_tonic = P_tonic./(1.5294);
 ind2 = P_clonic<0;
 P_clonic(ind2) = 0;
 P_clonic = P_clonic./(1.2922);
-
-%{
-ind = P_tonicR<0;
-P_tonicR(ind) = 0;
-P_tonicR = P_tonicR./(1.5294);
-
-ind2 = P_clonicR<0;
-P_clonicR(ind2) = 0;
-P_clonicR = P_clonicR./(1.2922);
-%}
 
 %% MASS BALANCE
 InitialDrug = Dose;
@@ -144,30 +132,21 @@ end
 
 %% calculate AUEC by integrating the protection against tonic seizures curve (trapezoidal rule)
 AUEC_tonic = 0;
-%AUEC_tonicR = 0;
 for i=1:(length(P_tonic)-1)
     AUEC_tonic = AUEC_tonic + 0.5*(P_tonic(i,1)+P_tonic(i+1,1))*(T1(i+1)-T1(i));
-    %AUEC_tonicR = AUEC_tonicR + 0.5*(P_tonicR(i,1)+P_tonicR(i+1,1))*(T1(i+1)-T1(i));
 end
 
 %Calculate Ctrough
 E_tonic_trough = P_tonic(length(P_tonic), 1);
-%E_tonic_troughR = P_tonicR(length(P_tonicR), 1);
-
 
 %% calculate AUEC by integrating the protection against clonic seizures curve (trapezoidal rule)
 AUEC_clonic = 0;
-%AUEC_clonicR = 0;
 for i=1:(length(P_tonic)-1)
     AUEC_clonic = AUEC_clonic + 0.5*(P_clonic(i,1)+P_clonic(i+1,1))*(T1(i+1)-T1(i));
-    %AUEC_clonicR = AUEC_clonicR + 0.5*(P_clonicR(i,1)+P_clonicR(i+1,1))*(T1(i+1)-T1(i));
-
 end
 
 %Calculate Ctrough
 E_clonic_trough = P_clonic(length(P_clonic), 1);
-%E_clonic_troughR = P_clonicR(length(P_clonicR), 1);
-
 
 %% calculate AUC by integrating the concentration curve (trapezoidal rule)
 AUC = 0;
