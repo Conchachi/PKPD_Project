@@ -92,7 +92,7 @@ save missed_dose_data/MissedDoseE_clonic_trough.mat E_clonic_trough;
 
 %Also save to folder for Shiny app
 save PKPD_Project_Levetiracetam_APP/data/MissedDoseConc.mat Conc_missed;
-t_m = t_m'; % optimize for R visualization
+t_m = t_m; % optimize for R visualization
 save PKPD_Project_Levetiracetam_APP/data/MissedDoseTime.mat t_m;
 save PKPD_Project_Levetiracetam_APP/data/MissedDoseAUC.mat auc_m;
 save PKPD_Project_Levetiracetam_APP/data/MissedDoseCtrough.mat ctrough_m;
