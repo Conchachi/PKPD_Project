@@ -23,7 +23,6 @@ library(reshape2)
 library(shinydashboardPlus)
 library(shinythemes)
 
-
 # ====================================================================================
 # DATA IMPORT
 
@@ -68,7 +67,6 @@ Ptonic_norm <-
   as.data.frame(readMat('data/RepeatedDoseP_tonic.mat'))
 t_norm <-
   as.data.frame(readMat('data/RepeatedDoseTime.mat'))
-
 
 
 # ====================================================================================
@@ -197,8 +195,6 @@ clonic
 
 # ====================================================================================
 # APP UI
-
-
 
 # Define UI for application that draws a histogram
 ui <-
@@ -445,6 +441,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = '[D] (mg/L)') +
       scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 23))+
       my_theme
     plotly_build(concplot)
   })
@@ -471,6 +468,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
       scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 100))+
       my_theme
     plotly_build(clonicplot)
   })
@@ -497,6 +495,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
       scale_color_brewer(name = 'Missed Dose (h)', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 100))+
       my_theme
     plotly_build(tonicplot)
   })
@@ -522,6 +521,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = '[D] (mg/L)') +
       scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 23))+
       my_theme
     plotly_build(concrplot)
   })
@@ -548,6 +548,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
       scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 100))+
       my_theme
     plotly_build(clonicrplot)
   })
@@ -574,6 +575,7 @@ server <- function(input, output) {
            x = 'Time (h)',
            y = 'Protection From Seizures (%)') +
       scale_color_brewer(name = '# Missed Doses', palette = 'Accent') +
+      scale_y_continuous(limits=c(0, 100))+
       my_theme
     plotly_build(tonicrplot)
   })
