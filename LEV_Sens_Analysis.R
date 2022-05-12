@@ -9,10 +9,14 @@ library("plotly")
 library("shiny")
 
 # set theme for all plots
-theme1 <- theme_classic(base_size = 20) +
+theme1 <- theme_classic(base_size = 35) +
   theme(text = element_text(),
-        panel.grid.major.y = element_line(colour = "grey", size = 0.2),
-        panel.grid.minor.y = element_line(colour = "grey", size = 0.2),
+        plot.title = element_text(hjust = 0.075),
+        axis.text.x = element_text(size = 30),
+        axis.text.y = element_text(size = 30),
+        legend.key.width = unit(0.5, 'cm'),
+        legend.text = element_text(angle=0,size=21),
+        legend.position = 'bottom',
         plot.title.position = "plot")
         
 SensAUC <- readMat('sens_analysis_data/SensAUC.mat')
@@ -75,15 +79,35 @@ AUC_plot<-ggplot(data = AUC, aes(x=Parameter, y=Sensitivity, colour = Legend, fi
   geom_bar(stat="identity", position=position_dodge()) + 
   labs(title = 'A')+
   ylim(-1.8,1.8)  + 
+  labs(colour = " ") + 
+  labs(fill = ' ')+
+  scale_color_manual(labels = c("AUC of Central\nCompartment\nConcentration", 
+                                "AUEC of Clonic\nSeizure Protection", 
+                                "AUEC of Tonic\nSeizure Protection"), 
+                     values = c("#F8766D", "#00BA38", "#619CFF")) +
+  scale_fill_manual(labels = c("AUC of Central\nCompartment\nConcentration", 
+                               "AUEC of Clonic\nSeizure Protection", 
+                               "AUEC of Tonic\nSeizure Protection"),
+                    values = c("#F8766D", "#00BA38", "#619CFF")) +
   theme1
 AUC_plot
-ggsave(filename = 'LocalSens_AUC_plot.png', plot = AUC_plot, path = 'sens_analysis_data/', width = 8, height = 6)
+ggsave(filename = 'LocalSens_AUC_plot.png', plot = AUC_plot, path = 'sens_analysis_data/', width = 10, height = 8)
 
 Trough_plot<-ggplot(data = Trough, aes(x=Parameter, y=Sensitivity, colour = Legend, fill=Legend)) +
   geom_bar(stat="identity", position=position_dodge()) + 
   labs(title = 'B')+
   ylim(-1.8,1.8) +
+  labs(colour = " ") + 
+  labs(fill = ' ')+
+  scale_color_manual(labels = c("Minimum Central\nCompartment\nConcentration", 
+                                "Minimum Clonic\nSeizure Protection", 
+                                "Minimum Tonic\nSeizure Protection"), 
+                     values = c("#F8766D", "#00BA38", "#619CFF")) +
+  scale_fill_manual(labels = c("Minimum Central\nCompartment\nConcentration", 
+                               "Minimum Clonic\nSeizure Protection", 
+                               "Minimum Tonic\nSeizure Protection"),
+                    values = c("#F8766D", "#00BA38", "#619CFF")) +
   theme1
 Trough_plot
-ggsave(filename = 'LocalSens_Trough_plot.png', plot = Trough_plot, path = 'sens_analysis_data/', width = 8, height = 6)
+ggsave(filename = 'LocalSens_Trough_plot.png', plot = Trough_plot, path = 'sens_analysis_data/', width = 10, height = 8)
 
