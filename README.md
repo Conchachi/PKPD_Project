@@ -19,19 +19,21 @@
 - LEV_missed_dose_consecutive.m runs the consecutive missed dose analysis and generates data for the Shiny app (Figure 17).
 - app.R generates the Shiny app.
 
-To generate the desired data and Figures, run the code in this order:
+To generate the desired data and Figures, first run all the MATLAB code files in this order:
 1. Levetiracetam_build_model.m
-2. Mass_balance_vis.R (Figure 3)
-3. Lev_ConcCurve.R (Figure 4)
-4. single_dose_repeated_dose.R (Figures 5 and 6)
-5. LEV_Sens_Analysis.m
-6. LEV_Sens_Analysis.R (Figure 7)
-7. LEV_GSA.m
-8. LEV_GSA.R (Figure 8)
-9. LEV_PopVar.m
-10. LEV_PopVar.R (Figures 9-11)
-11. LEV_missed_dose.m
-12. LEV_missed_dose_vis.R (Figure 12)
-13. missed_dose_pop_histogram.R (Figures 13 and 14)
-14. LEV_missed_dose_consecutive.m
-15. app.R (Shiny App; link access: https://connie-chang-chien.shinyapps.io/PKPD_Project_Levetiracetam/?_ga=2.144305398.210535369.1651115737-794475808.1649938165)
+2. LEV_Sens_Analysis.m
+3. LEV_GSA.m
+4. LEV_PopVar.m
+5. LEV_missed_dose.m
+6. LEV_missed_dose_consecutive.m
+
+Then run the visualization code to generate the figures and app:
+1. Mass_balance_vis.R (Figure 3)
+2. Lev_ConcCurve.R (Figure 4)
+3. single_dose_repeated_dose.R (Figures 5 and 6)
+4. LEV_Sens_Analysis.R (Figure 7)
+5. LEV_GSA.R (Figure 8)
+6. LEV_PopVar.R (Figures 9-11)
+7. LEV_missed_dose_vis.R (Figure 12)
+8. missed_dose_pop_histogram.R (Figures 13 and 14)
+9. app.R (Shiny App: link access: https://connie-chang-chien.shinyapps.io/PKPD_Project_Levetiracetam/?_ga=2.144305398.210535369.1651115737-794475808.1649938165)
