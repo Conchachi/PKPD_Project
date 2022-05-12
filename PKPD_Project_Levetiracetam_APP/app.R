@@ -66,14 +66,14 @@ Pclonic_norm <-
 Ptonic_norm <-
   as.data.frame(readMat('data/RepeatedDoseP_tonic.mat'))
 t_norm <-
-  as.data.frame(readMat('data/RepeatedDoseTime.mat'))
+  as.data.frame(readMat('data/MissedDoseTime.mat'))
 
 
 # ====================================================================================
 # DATA MANIPULATION for Time Change
 # Helper function for pivoting
 pivot_helper <- function(df, val_name) {
-  col_names <- c('2.4', '4.8', '7.2', '9.6', '12', 'Skipped')
+  col_names <- c('2.4', '4.8', '7.2', '9.6', '12', 'Skipped', 'Normal')
   col_names <- append(col_names, 't')
   names(df) <- col_names
   return(pivot_longer(df, 
@@ -156,8 +156,8 @@ LINE_THICKNESS = 1
 conc <- ggplot(data = NULL) +
   geom_line(size = LINE_THICKNESS) +
   geom_line(data = conc_normal,
-            aes(x = Time,
-                y = Conc)) +
+            aes(x = t.m,
+                y = Rep.conc)) +
   labs(title = 'Levetiracetam Concentration Over Time',
        x = 'Time (h)',
        y = '[D] (mg/L)') +
@@ -434,9 +434,9 @@ server <- function(input, output) {
             y = Conc,
             color = Missed)
       ) +
-      geom_line(data = filter(conc_normal, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
-                    y = Conc)) +
+      geom_line(data = filter(conc_normal, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
+                    y = Rep.conc)) +
       labs(title = 'Levetiracetam Concentration Over Time',
            x = 'Time (h)',
            y = '[D] (mg/L)') +
@@ -461,8 +461,8 @@ server <- function(input, output) {
             y = Pclonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Pclonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
+      geom_line(data = filter(Pclonic_norm, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
                     y = P.clonic)) +
       labs(title = 'Clonic Seizure Protection Over Time',
            x = 'Time (h)',
@@ -488,8 +488,8 @@ server <- function(input, output) {
             y = Ptonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Ptonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
+      geom_line(data = filter(Ptonic_norm, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
                     y = P.tonic)) +
       labs(title = 'Tonic Seizure Protection Over Time',
            x = 'Time (h)',
@@ -514,9 +514,9 @@ server <- function(input, output) {
             y = Conc,
             color = Missed)
       ) +
-      geom_line(data = filter(conc_normal, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
-                    y = Conc)) +
+      geom_line(data = filter(conc_normal, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
+                    y = Rep.conc)) +
       labs(title = 'Levetiracetam Concentration Over Time',
            x = 'Time (h)',
            y = '[D] (mg/L)') +
@@ -541,8 +541,8 @@ server <- function(input, output) {
             y = Pclonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Pclonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
+      geom_line(data = filter(Pclonic_norm, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
                     y = P.clonic)) +
       labs(title = 'Clonic Seizure Protection Over Time',
            x = 'Time (h)',
@@ -568,8 +568,8 @@ server <- function(input, output) {
             y = Ptonic,
             color = Missed)
       ) +
-      geom_line(data = filter(Ptonic_norm, Time >= input$timelen[1], Time <= input$timelen[2]),
-                aes(x = Time,
+      geom_line(data = filter(Ptonic_norm, t.m >= input$timelen[1], t.m <= input$timelen[2]),
+                aes(x = t.m,
                     y = P.tonic)) +
       labs(title = 'Tonic Seizure Protection Over Time',
            x = 'Time (h)',
