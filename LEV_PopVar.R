@@ -1,8 +1,5 @@
 # Final Project - LEV Population Variability
-# Outputs many plots
-
-  theme1 + 
-  theme(legend.position="none")  
+# Outputs plots for Figures 9, 10, and 11
 
 # Load necessary packages
 library("R.matlab")
@@ -19,10 +16,8 @@ library("viridis")
 theme1 <- theme_classic() +
   theme(text = element_text(size = 18),
         plot.title = element_text(hjust = 0),
-        axis.title.x = element_text(margin = margin(10, 0, 0, 0)),
-        axis.title.y = element_text(margin = margin(0, 10, 0, 0)),
-        axis.text.x = element_text(margin = margin(5, 0, 0, 0)),
-        axis.text.y = element_text(margin = margin(0, 5, 0, 0)),
+        axis.text.x = element_text(size = 15),
+        axis.text.y = element_text(size = 15),
         legend.text = element_text(size=12),
         legend.box.background = element_rect(colour = "black"),
         plot.title.position = "plot")
@@ -65,42 +60,42 @@ both_data <- bind_cols(both_data, ka_values, kcl_values)
 ka_AUC_Plot <- ggplot(data = NULL) +
   geom_point(data = ka_data, aes(x = kA, y = AUC), color='darkorchid', size = 1.5) +
   labs(title = 'A', 
-       x = 'kA (1/hr)', y = 'AUC (mg*h/L)') +
+       x = 'kA (1/hr)', y = 'AUC of Central Compartment\nConcentration (mg*h/L)') +
   theme1
 plot(ka_AUC_Plot)
-ggsave(filename = 'ka_AUC.png', plot = ka_AUC_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
+ggsave(filename = 'ka_AUC.png', plot = ka_AUC_Plot, path = 'pop_var_data/', width = 5, height = 4.5)
 
 
 ka_AUEC_Plot <- ggplot(data = NULL) +
-  geom_point(data = ka_data, aes(x = kA, y = AUECTonic, color="AUEC- Tonic"), size = 1.5) +
-  geom_point(data = ka_data, aes(x = kA, y = AUECClonic, color="AUEC- Clonic"), size = 1.5) +
+  geom_point(data = ka_data, aes(x = kA, y = AUECTonic, color="AUEC of Tonic\nSeizure Protection"), size = 1.5) +
+  geom_point(data = ka_data, aes(x = kA, y = AUECClonic, color="AUEC of Clonic\nSeizure Protection"), size = 1.5) +
   labs(title = 'C', 
-       x = 'kA (1/hr)', y = 'AUEC (% * hr)', color = 'Legend') +
+       x = 'kA (1/hr)', y = 'AUEC of Seizure\nProtection (% * hr)', color = ' ') +
   theme1 + 
-  theme(legend.position  = 'bottom')
+  theme(legend.position  = 'bottom') 
 plot(ka_AUEC_Plot)
-ggsave(filename = 'ka_AUEC.png', plot = ka_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 4)
+ggsave(filename = 'ka_AUEC.png', plot = ka_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 5)
 
 
 ka_Ctrough_Plot <- ggplot(data = NULL) +
   geom_point(data = ka_data, aes(x = kA, y = Ctrough), color='darkorchid', size = 1.5) +
   labs(title = 'B', 
-       x = 'kA (1/hr)', y = 'Ctrough (mg/L)') +
+       x = 'kA (1/hr)', y = 'Ctrough- Minimum Central\nCompartment Conc. (mg/L)') +
   theme1 + 
   theme(legend.position="none")
 plot(ka_Ctrough_Plot)
-ggsave(filename = 'ka_Ctrough.png', plot = ka_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
+ggsave(filename = 'ka_Ctrough.png', plot = ka_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 4.5)
 
 
 ka_Etrough_Plot <- ggplot(data = NULL) +
-  geom_point(data = ka_data, aes(x = kA, y = EtroughTonic, color="Etrough- Tonic"), size = 1.5) +
-  geom_point(data = ka_data, aes(x = kA, y = EtroughClonic, color="Etrough- Clonic"), size = 1.5) +
+  geom_point(data = ka_data, aes(x = kA, y = EtroughTonic, color="Minimum Tonic\nSeizure Protection"), size = 1.5) +
+  geom_point(data = ka_data, aes(x = kA, y = EtroughClonic, color="Minimum Clonic\nSeizure Protection"), size = 1.5) +
   labs(title = 'D', 
-       x = 'kA (1/hr)', y = 'Etrough (%)', color = 'Legend') +
+       x = 'kA (1/hr)', y = 'Etrough- Minimum\nSeizure Protection (%)', color = ' ') +
   theme1 + 
   theme(legend.position  = 'bottom') 
 plot(ka_Etrough_Plot)
-ggsave(filename = 'ka_Etrough.png', plot = ka_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 4)
+ggsave(filename = 'ka_Etrough.png', plot = ka_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 5)
 
 
 ################################################################################
@@ -108,42 +103,42 @@ ggsave(filename = 'ka_Etrough.png', plot = ka_Etrough_Plot, path = 'pop_var_data
 
 kcl_AUC_Plot <- ggplot(data = NULL) +
   geom_point(data = kcl_data, aes(x = kCL, y = AUC), color='darkorchid', size = 1.5) +
-  labs(title = 'A',
-       x = 'kCL (1/hr)', y = 'AUC (mg*h/L)') +
+  labs(title = 'A', 
+       x = 'kCL (1/hr)', y = 'AUC of Central Compartment\nConcentration (mg*h/L)') +
   theme1
 plot(kcl_AUC_Plot)
-ggsave(filename = 'kcl_AUC.png', plot = kcl_AUC_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
+ggsave(filename = 'kcl_AUC.png', plot = kcl_AUC_Plot, path = 'pop_var_data/', width = 5, height = 4.5)
 
 
 kcl_AUEC_Plot <- ggplot(data = NULL) +
-  geom_point(data = kcl_data, aes(x = kCL, y = AUECTonic, color="AUEC- Tonic"), size = 1.5) +
-  geom_point(data = kcl_data, aes(x = kCL, y = AUECClonic, color="AUEC- Clonic"), size = 1.5) +
+  geom_point(data = kcl_data, aes(x = kCL, y = AUECTonic, color="AUEC of Tonic\nSeizure Protection"), size = 1.5) +
+  geom_point(data = kcl_data, aes(x = kCL, y = AUECClonic, color="AUEC of Clonic\nSeizure Protection"), size = 1.5) +
   labs(title = 'C', 
-       x = 'kCL (1/hr)', y = 'AUEC (% * hr)', color = 'Legend') +
+       x = 'kCL (1/hr)', y = 'AUEC of Seizure\nProtection (% * hr)', color = ' ') +
   theme1 + 
   theme(legend.position  = "bottom")
 plot(kcl_AUEC_Plot)
-ggsave(filename = 'kcl_AUEC.png', plot = kcl_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 4)
+ggsave(filename = 'kcl_AUEC.png', plot = kcl_AUEC_Plot, path = 'pop_var_data/', width = 5, height = 5)
 
 
 kcl_Ctrough_Plot <- ggplot(data = NULL) +
   geom_point(data = kcl_data, aes(x = kCL, y = Ctrough), color='darkorchid', size = 1.5) +
   labs(title = 'B', 
-       x = 'kCL (1/hr)', y = 'Ctrough (mg/L)') +
+       x = 'kCL (1/hr)', y = 'Ctrough- Minimum Central\nCompartment Conc. (mg/L)') + 
   theme1
 plot(kcl_Ctrough_Plot)
-ggsave(filename = 'kcl_Ctrough.png', plot = kcl_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 3.5)
+ggsave(filename = 'kcl_Ctrough.png', plot = kcl_Ctrough_Plot, path = 'pop_var_data/', width = 5, height = 4.5)
 
 
 kcl_Etrough_Plot <- ggplot(data = NULL) +
-  geom_point(data = kcl_data, aes(x = kCL, y = EtroughTonic, color="Etrough- Tonic"), size = 1.5) +
-  geom_point(data = kcl_data, aes(x = kCL, y = EtroughClonic, color="Etrough- Clonic"), size = 1.5) +
+  geom_point(data = kcl_data, aes(x = kCL, y = EtroughTonic, color="Minimum Tonic\nSeizure Protection"), size = 1.5) +
+  geom_point(data = kcl_data, aes(x = kCL, y = EtroughClonic, color="Minimum Clonic\nSeizure Protection"), size = 1.5) +
   labs(title = 'D', 
-       x = 'kCL (1/hr)', y = 'Etrough (%)', color = 'Legend') +
+       x = 'kCL (1/hr)', y = 'Etrough- Minimum\nSeizure Protection (%)', color = ' ') +
   theme1 + 
   theme(legend.position  = 'bottom')
 plot(kcl_Etrough_Plot)
-ggsave(filename = 'kcl_Etrough.png', plot = kcl_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 4)
+ggsave(filename = 'kcl_Etrough.png', plot = kcl_Etrough_Plot, path = 'pop_var_data/', width = 5, height = 5)
 ################################################################################
 
 # Varying both kA and kCL
@@ -163,22 +158,22 @@ theme1 <- theme_classic(base_size = 12) +
 AUC3D <- ggplot(both_data, aes(kA, kCL, color=AUC)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'A') +
+  labs(title = 'A    AUC of Central Compartment Concentration')+
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = 'AUC') +
+  labs(color = ' ') +
   theme1 
 ggsave(filename = '3DAUC.png', plot = AUC3D, path = 'pop_var_data/', width = 5, height = 4)
-#plot(AUC3D)
+plot(AUC3D)
 
 
 ClonicAUEC3D <- ggplot(both_data, aes(kA, kCL, color=AUECClonic)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'B') +
+  labs(title = 'B    AUEC of Clonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = 'Clonic\nAUEC') +
+  labs(color = ' ') +
   theme1 
 ggsave(filename = '3DClonicAUEC.png', plot = ClonicAUEC3D, path = 'pop_var_data/', width = 5, height = 4)
 #plot(ClonicAUEC3D)
@@ -187,10 +182,10 @@ ggsave(filename = '3DClonicAUEC.png', plot = ClonicAUEC3D, path = 'pop_var_data/
 TonicAUEC3D <- ggplot(both_data, aes(kA, kCL, color=AUECTonic)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'C') +
+  labs(title = 'C    AUEC of Tonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = 'Tonic\nAUEC') +
+  labs(color = ' ') +
   theme1 
 ggsave(filename = '3DTonicAUEC.png', plot = TonicAUEC3D, path = 'pop_var_data/', width = 5, height = 4)
 #plot(TonicAUEC3D)
@@ -199,10 +194,10 @@ ggsave(filename = '3DTonicAUEC.png', plot = TonicAUEC3D, path = 'pop_var_data/',
 Ctrough3D <- ggplot(both_data, aes(kA, kCL, color=Ctrough)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'D') +
+  labs(title = 'D    Minimum Central Compartment Concentration') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') + 
-  labs(color = 'C\ntrough') +
+  labs(color = '(mg/L)') +
   theme1 
 ggsave(filename = '3DCtrough.png', plot = Ctrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(Ctrough3D)
@@ -211,10 +206,10 @@ plot(Ctrough3D)
 ClonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughClonic)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'E') +
+  labs(title = 'E    Minimum Clonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = 'Clonic\nEtrough') +
+  labs(color = '(%)') +
   theme1 
 ggsave(filename = '3DClonicEtrough.png', plot = ClonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(ClonicEtrough3D)
@@ -223,23 +218,11 @@ plot(ClonicEtrough3D)
 TonicEtrough3D <- ggplot(both_data, aes(kA, kCL, color=EtroughTonic)) + 
   geom_point(size=3) +
   scale_color_viridis(discrete = FALSE) +
-  labs(title = 'F') +
+  labs(title = 'F    Minimum Tonic Seizure Protection') +
   xlab('kA (hr-1)') +
   ylab('kCL (hr-1)') +
-  labs(color = 'Tonic\nEtrough') +
+  labs(color = '(%)') +
   theme1 
 ggsave(filename = '3DTonicEtrough.png', plot = TonicEtrough3D, path = 'pop_var_data/', width = 5, height = 4)
 plot(TonicEtrough3D)
-
-
-
-
-library(patchwork)
-
-new_plot <- (AUC3D | ClonicAUEC3D ) / (TonicAUEC3D | Ctrough3D)
-
-ggsave(filename = 'newplot.png', plot = new_plot, path = 'pop_var_data/', width = 12, height = 8)
-
-
-
 
