@@ -27,6 +27,7 @@ Equations and Simulation Code:
 - Levetiracetam_sim.m is the function called to run the simulation. This function outputs all of the key metrics (concentrations, effects, AUC, AUEC, Ctrough, and Etrough)
 
 Model building: (all generated .mat files and figures are saved to the build_model_data folder)
+- LEV SV2A occupancy seizure protection correlation.xlsx shows the linear correlation between SV2A occupancy and seizure protection extracted from literature. These extracted linear fits are shown in Figure 2 and used to build PD models.
 - Levetiracetam_build_model.m builds the model and generates the data for Figures 3-6.
 - Mass_balance_vis.R generates Figure 3.
 - Lev_ConcCurve.R generates Figure 4.
